@@ -1,0 +1,16 @@
+.results{
+    position: absolute;
+    background-color: rgb(250, 252, 252);
+    width: 100%;
+    height: auto;
+    border-radius: 5%;
+    top:100%;
+    visibility: hidden;
+    z-index: 1;
+    
+
+}
+
+.list{
+    list-style: none;
+}
