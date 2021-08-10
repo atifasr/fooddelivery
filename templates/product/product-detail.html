@@ -29,7 +29,6 @@
 
 
 <hr>
-	
 	<div class="row">
 		<div class="item-option-select">
 			<h6>Select Size</h6>
@@ -51,7 +50,7 @@
 	</div> <!-- row.// -->
 	<hr>
 
-	<a href="{% url 'orders:add_cart' menu.id %}" class="btn  btn-primary"> <span class="text">Add to cart</span> <i class="fas fa-shopping-cart"></i>  </a>
+	<a href="{% url 'orders:add_cart' menu.id %}" data-menu='{{menu.id}}' data-action='add' class="btn  btn-primary add-button"> <span class="text">Add to cart</span> <i class="fas fa-shopping-cart"></i>  </a>
 	
 </article> <!-- product-info-aside .// -->
 		</main> <!-- col.// -->
@@ -96,6 +95,25 @@
 </div> <!-- container .//  -->
 </section>
 <!-- ========================= SECTION CONTENT END// ========================= -->
+
+
+<script>
+
+let user = '{{request.user}}'
+let add_button = document.querySelector('.add-button');
+let menu_id  = add_button.getAttribute('data-menu');
+let action  = add_button.getAttribute('data-action');
+cart = {
+	menu_id : menu_id,
+	action : action
+}
+
+document.cookie = 'cart='+ JSON.stringify(cart)
+
+console.log(cart)
+console.log(document.cookie)
+
+</script>
 
 
 {% endblock %}

@@ -35,6 +35,7 @@ class MenuItem(models.Model):
     image = models.ImageField(upload_to='menu_items')
     date_added =models.DateTimeField(auto_now_add=True)
     restruant = models.ManyToManyField(to='restaurants.Restaurants',blank=True)
+    offer = models.ManyToManyField(to='menus.Offer')
     # is_added= models.BooleanField(default=False)
     
     def __str__(self):
@@ -46,7 +47,9 @@ class MenuItem(models.Model):
             return self.image.url
         else:
             return " "
-    
+    # @property
+    # def discounted_price(self):
+    #     return self.price*self.offer.discount_percent
 
 
 class Ingredients(models.Model):
@@ -60,3 +63,28 @@ class Ingredients(models.Model):
 #     review = models.TextField()
 #     customer = models.ForeignKey(
 #         Customers, on_delete=models.SET_NULL, null=True)
+
+
+
+
+class Offer(models.Model):
+    name =  models.CharField(blank= True,max_length=50)
+    discount = models.DecimalField(blank=True,max_digits=4,decimal_places=2)
+    date_from = models.DateField()
+    time_from =models.TimeField()
+    date_to= models.DateField()
+    time_to = models.TimeField()
+
+    class Meta:
+        ordering = ['id']
+
+    @property
+    def discount_percent(self):
+        return (100-self.price)/100
+
+    def __str__(self):
+        return f'{self.name} offer'
+
+    
+
+

@@ -11,7 +11,7 @@ class CartItemAdmin(admin.ModelAdmin):
 
     
 class CartAdmin(admin.ModelAdmin):
-    list_display=('user','session_id','count','total')
+    list_display=('user','count','total')
 
 
 
