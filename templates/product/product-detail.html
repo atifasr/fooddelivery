@@ -97,21 +97,9 @@
 <!-- ========================= SECTION CONTENT END// ========================= -->
 
 
-<script>
+<script src="{{ static 'orders/cart_function.js'}}">
 
-let user = '{{request.user}}'
-let add_button = document.querySelector('.add-button');
-let menu_id  = add_button.getAttribute('data-menu');
-let action  = add_button.getAttribute('data-action');
-cart = {
-	menu_id : menu_id,
-	action : action
-}
 
-document.cookie = 'cart='+ JSON.stringify(cart)
-
-console.log(cart)
-console.log(document.cookie)
 
 </script>
 

@@ -5,6 +5,7 @@ from .models import Cart,CartItem,PlacedOrder
 from django.shortcuts import redirect, render, resolve_url
 from menus.models import MenuItem
 import json
+from collections import namedtuple
 # Create your views here.
 
 #helper function for session retreival
@@ -58,15 +59,10 @@ def add_cart(request,menu_id):
     
     else:
         # get data from dictionary
-        data = request.COOKIES.get('cart')
+        
+        data = request.COOKIES.get('cartitem')
         print(data)
-        cart = {
-            'user':'',
-            'count':'',
-            'total':'',
-            'updated':'',
-            'timestamp':''
-            }
+       
 
     return redirect('/view_cart')
 
@@ -90,24 +86,48 @@ def remove_cart(request,menu_id):
 
 def view_cart(request):
     if request.method=='GET':
-        try:
-            if request.user.is_authenticated:
+        total_value = 0
+    
+        if request.user.is_authenticated:
+            try:
                 cust = Customers.objects.get(user= request.user)
                 cart=Cart.objects.get(user=cust)
                 cartitem=CartItem.objects.filter(cart=cart)
                 total_value= cart.total
-            else:
-                cartitem = {}
-                total_value = 0
-                data = request.COOKIES.get('cart')
-                print(data)
-                #get data from cookies as user is not logged in
-                # cart=Cart.objects.get(session_id=get_session(request))
+            except ObjectDoesNotExist:
+                messages.add_message(request,messages.INFO,'Cart is empty!')
+                cartitem=None
+        else:
             
-        except ObjectDoesNotExist:
-            messages.add_message(request,messages.INFO,'Cart is empty!')
-            total_value = 0
-            cartitem=None
+            data = request.COOKIES.get('cartitem')
+            data =json.loads(data)
+
+            cartitem = []
+            # print(data)
+            for val in data:
+                data[val]['id']=val
+                print(data[val])
+            
+            for item in data:
+                cart_item = {
+                    'id':data[item]['id'],
+                    'name':data[item]['name'],
+                    'total_price':data[item]['price'],
+                    'quantity':data[item]['quantity'],
+                }
+                cartitem.append(cart_item)
+
+
+            
+            print(data.keys())
+           
+
+            print(cartitem)
+           
+           
+            # cart=Cart.objects.get(session_id=get_session(request))
+            
+       
         return render(request,'cart/cart.html',{
             'cartitem':cartitem,
             'total_value':total_value

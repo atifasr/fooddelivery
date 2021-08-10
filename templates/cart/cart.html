@@ -23,6 +23,8 @@
 </thead>
 <tbody>
 
+{% if request.user.is_authenticated %}
+
 	{% for item in cartitem %}
 <tr>
 	<td>
@@ -68,6 +70,49 @@
 	</td>
 </tr>
 {% endfor %}
+{% else %}
+
+
+{% for item in cartitem %}
+<tr>
+	<td>
+
+		<figure class="itemside align-items-center">
+			<div class="aside"><img src="" class="img-sm"></div>
+			<figcaption class="info">
+				<a href="#" class="title text-dark">{{item.name}}</a>
+				<p class="text-muted small">Matrix: 25 Mpx <br> Brand: Canon</p>
+			</figcaption>
+		</figure>
+	</td>
+	<td> 
+		<!-- col.// -->
+					<div class="col"> 
+						<div class="input-group input-spinner">
+							<div class="input-group-prepend">
+							<a href=""><button class="btn btn-light" type="button" id="button-plus"> <i class="fa fa-minus"></i> </button></a>
+							</div>
+							<input  type="text" class="form-control quantity"  value="{{item.quantity}}">
+							<div class="input-group-append">
+							<a href="{% url 'orders:add_cart' item.id %}"><button class="btn btn-light" type="button" id="button-minus"> <i class="fa fa-plus"></i> </button></a>
+							</div>
+						</div> <!-- input-group.// -->
+					</div> <!-- col.// -->
+	</td>
+	<td> 
+		<div class="price-wrap"> 
+			<var class="price">{{item.total_price}}</var> 
+			<small class="text-muted"> {{item.menu_item.price}} </small> 
+		</div> <!-- price-wrap .// -->
+	</td>
+	<td class="text-right"> 
+	<a href="" class="btn btn-danger"> Remove</a>
+	</td>
+</tr>
+{% endfor %}
+
+{% endif %}
+
 
 </tbody>
 </table>
@@ -111,11 +156,22 @@
 <!-- ========================= SECTION CONTENT END// ========================= -->
 <script>
 
-
-window.onload = (e)=>{
-
-	
+function readCookie(name) {
+    var nameEQ = name + "=";
+    var ca = document.cookie.split(';');
+    for(var i=0;i < ca.length;i++) {
+        var c = ca[i];
+        while (c.charAt(0)==' ') c = c.substring(1,c.length);
+        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+    }
+    return null;
 }
+
+CartItem = readCookie('cartitem')
+CartItem=JSON.parse(CartItem)
+console.log(CartItem)
+// console.log(action)
+
 
 </script>
 {% endblock %}
