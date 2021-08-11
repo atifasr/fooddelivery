@@ -6,6 +6,7 @@ from django.shortcuts import redirect, render, resolve_url
 from menus.models import MenuItem
 import json
 from collections import namedtuple
+from .helpers import cartItems
 # Create your views here.
 
 #helper function for session retreival
@@ -73,13 +74,17 @@ def remove_cart(request,menu_id):
         cart = Cart.objects.get(user=cust)
         item = CartItem.objects.get(menu_item__id = menu_id,cart=cart)
         print(item)
-        cart.count-=1
+        cart.count -= 1
         cart.total = float(cart.total) - float(item.quantity * item.menu_item.price)
         cart.save()
         if item.quantity == 0:
             item.delete()
         else:
             decrease_item(item)
+    else:
+        data = request.COOKIES.get('cartitem')
+        print(data)
+       
         
     return redirect('/view_cart')
 
@@ -99,34 +104,9 @@ def view_cart(request):
                 cartitem=None
         else:
             
-            data = request.COOKIES.get('cartitem')
-            data =json.loads(data)
+            cartitem=cartItems(request)      
 
-            cartitem = []
-            # print(data)
-            for val in data:
-                data[val]['id']=val
-                print(data[val])
-            
-            for item in data:
-                cart_item = {
-                    'id':data[item]['id'],
-                    'name':data[item]['name'],
-                    'total_price':data[item]['price'],
-                    'quantity':data[item]['quantity'],
-                }
-                cartitem.append(cart_item)
-
-
-            
-            print(data.keys())
-           
-
-            print(cartitem)
-           
-           
-            # cart=Cart.objects.get(session_id=get_session(request))
-            
+            print(cartitem)      
        
         return render(request,'cart/cart.html',{
             'cartitem':cartitem,
@@ -158,20 +138,23 @@ def remove_item(request,item_id):
 
 def place_order(request):
     if request.method=='GET':
+        total=0
+        cust=None
         if request.user.is_authenticated:
             try:
                 cust = Customers.objects.get(user=request.user)
                 cart = Cart.objects.get(user=cust)
                 cartitems = CartItem.objects.filter(cart=cart)
+                total=cart.total
             except ObjectDoesNotExist:
                 print('objects not found ')
         else:
-            return redirect('/register')
+            cartitems = cartItems(request)
 
     
         return render(request,'place-order.html',{
             'cartitems':cartitems,
-            'total_amount':cart.total,
+            'total_amount':total,
             'customer':cust,
         })
     

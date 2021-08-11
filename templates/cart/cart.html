@@ -66,7 +66,7 @@
 		</div> <!-- price-wrap .// -->
 	</td>
 	<td class="text-right"> 
-	<a href="{% url 'orders:remove_item' item.id %}" class="btn btn-danger"> Remove</a>
+	<a href="{% url 'orders:remove_item' item.id %}"  class="btn btn-danger"> Remove</a>
 	</td>
 </tr>
 {% endfor %}
@@ -90,11 +90,13 @@
 					<div class="col"> 
 						<div class="input-group input-spinner">
 							<div class="input-group-prepend">
-							<a href=""><button class="btn btn-light" type="button" id="button-plus"> <i class="fa fa-minus"></i> </button></a>
+								<a href="{% url 'orders:remove_cart' item.id %}" 
+								data-name="{{item.name}}" data-price="{{item.price}}" class="btn btn-light add-button" data-menu="{{item.id}}" data-action="remove"><span><i class="fa fa-minus"></i></span> </a>
 							</div>
 							<input  type="text" class="form-control quantity"  value="{{item.quantity}}">
 							<div class="input-group-append">
-							<a href="{% url 'orders:add_cart' item.id %}"><button class="btn btn-light" type="button" id="button-minus"> <i class="fa fa-plus"></i> </button></a>
+							<a href="{% url 'orders:add_cart' item.id %}" 
+							data-name="{{item.name}}" data-price="{{item.price}}" class="btn btn-light add-button" data-menu="{{item.id}}" data-action="add"><span><i class="fa fa-plus"></i></span> </a>
 							</div>
 						</div> <!-- input-group.// -->
 					</div> <!-- col.// -->
@@ -102,11 +104,11 @@
 	<td> 
 		<div class="price-wrap"> 
 			<var class="price">{{item.total_price}}</var> 
-			<small class="text-muted"> {{item.menu_item.price}} </small> 
+			<small class="text-muted"> {{item.price}} </small> 
 		</div> <!-- price-wrap .// -->
 	</td>
 	<td class="text-right"> 
-	<a href="" class="btn btn-danger"> Remove</a>
+	<a href="" class="btn btn-danger remove" data-menu="{{item.id}}"> Remove</a>
 	</td>
 </tr>
 {% endfor %}
@@ -154,24 +156,12 @@
 </div> <!-- container .//  -->
 </section>
 <!-- ========================= SECTION CONTENT END// ========================= -->
+
 <script>
-
-function readCookie(name) {
-    var nameEQ = name + "=";
-    var ca = document.cookie.split(';');
-    for(var i=0;i < ca.length;i++) {
-        var c = ca[i];
-        while (c.charAt(0)==' ') c = c.substring(1,c.length);
-        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
-    }
-    return null;
-}
-
-CartItem = readCookie('cartitem')
-CartItem=JSON.parse(CartItem)
-console.log(CartItem)
-// console.log(action)
-
+	var user = '{{request.user}}'
+	var add_button = document.querySelector('.add-button');
+</script>
+<script src="{% static 'orders/cart_function.js' %}">
 
 </script>
 {% endblock %}
