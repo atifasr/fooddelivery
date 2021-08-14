@@ -1,5 +1,5 @@
 {% extends "base/index.html" %}
-
+{% load static %}
 {% block content %}
 
 <section class="section-content padding-y bg">
@@ -29,7 +29,6 @@
 
 
 <hr>
-	
 	<div class="row">
 		<div class="item-option-select">
 			<h6>Select Size</h6>
@@ -51,7 +50,7 @@
 	</div> <!-- row.// -->
 	<hr>
 
-	<a href="{% url 'orders:add_cart' menu.id %}" class="btn  btn-primary"> <span class="text">Add to cart</span> <i class="fas fa-shopping-cart"></i>  </a>
+	<a href="{% url 'orders:add_cart' menu.id %}" data-name='{{menu.item_name}}' data-price='{{menu.price}}' data-menu='{{menu.id}}' data-action='add' class="btn  btn-primary add-button"> <span class="text">Add to cart</span> <i class="fas fa-shopping-cart"></i>  </a>
 	
 </article> <!-- product-info-aside .// -->
 		</main> <!-- col.// -->
@@ -96,6 +95,20 @@
 </div> <!-- container .//  -->
 </section>
 <!-- ========================= SECTION CONTENT END// ========================= -->
+
+
+<script>
+var user = '{{request.user}}'
+var add_button = document.querySelector('.add-button');
+var menu_price  = '{{menu.price}}';
+
+</script>
+
+<script src="{% static 'orders/cart_function.js' %}">
+
+	
+
+</script>
 
 
 {% endblock %}

@@ -1,9 +1,9 @@
 from django.db import models
 from django.db.models.aggregates import Max
 from django.db.models.deletion import CASCADE
-# from menus.models import MenuItem
 # from restaurants.models import Restraunts
 from customers.models import Customers
+
 #----------------------------
 
 # Create your models Here.
@@ -49,7 +49,6 @@ class Status(models.Model):
 
 class Cart(models.Model):
     user = models.ForeignKey(Customers, null=True, blank=True, on_delete=models.CASCADE)
-    session_id = models.CharField(max_length=255)
     #total items
     count = models.PositiveIntegerField(default=0)
     #total amount

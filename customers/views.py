@@ -75,16 +75,6 @@ def login_user(request):
         print(user)
         if user is not None:
             login(request,user)
-            try:
-                print('executed')
-                cart = Cart.objects.get(session_id=get_session(request))
-                if cart:
-                    if request.user.is_authenticated and cart.user == None:
-                        cart.user=Customers.objects.get(user=request.user)
-                        cart.save()
-            except ObjectDoesNotExist:
-                print('in exception')
-                pass
             messages.add_message(request,messages.INFO,'successfully logged in!')
             return redirect('/')
         else:
