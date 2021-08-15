@@ -3,7 +3,7 @@ from .models import *
 # Register your models here.
 
 class PlacedOrderAdmin(admin.ModelAdmin):
-    list_display = ['restraunt','order_time','estimated_delivery_time']
+    list_display = ['customer','restraunt','order_time','estimated_delivery_time']
 
 
 class CartItemAdmin(admin.ModelAdmin):

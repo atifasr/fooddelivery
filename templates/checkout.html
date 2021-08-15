@@ -1,0 +1,192 @@
+{% extends "base/index.html"%}
+{% load static %}
+	{% block content %}
+<!-- ============================ COMPONENT 2 ================================= -->
+<div class="row">
+		<main class="col-md-8">
+
+<article class="card mb-4">
+<div class="card-body">
+	<h4 class="card-title mb-4">Review cart</h4>
+	<div class="row">
+		{% if request.user.is_authenticated %}
+		{% for item in order_details.ordereditems %}
+		<div class="col-md-6">
+			<figure class="itemside  mb-4">
+				<div class="aside"><img src="{{item.menu_item.image.url}}" class="border img-sm"></div>
+				<figcaption class="info">
+					<p>{{item.item_name}}</p>
+					<span class="text-muted">{{item.quantity}}x = ₹{{item.total_price}} </span>
+				</figcaption>
+			</figure>
+		</div> <!-- col.// -->
+		{% endfor %}
+		{% else %}
+
+		{% for item in cartitems %}
+		<div class="col-md-6">
+			<figure class="itemside  mb-4">
+				<div class="aside"><img src="{{item.menu_item.image.url}}" class="border img-sm"></div>
+				<figcaption class="info">
+					<p>{{item.name}}</p>
+					<span class="text-muted">{{item.quantity}}x = ₹{{item.total_price}} </span>
+				</figcaption>
+			</figure>
+		</div> <!-- col.// -->
+		{% endfor %}
+
+
+		{% endif %}
+	</div> <!-- row.// -->
+</div> <!-- card-body.// -->
+</article> <!-- card.// -->
+
+
+<article class="card mb-4">
+<div class="card-body">
+	<h4 class="card-title mb-4">Order Review</h4>
+	<ul >
+	{% for key,val in order_details.contact_info.items %}
+	<li name="{{key}}">{{val}}</li>
+
+	{% endfor %}
+</ul>
+</div> <!-- card-body.// -->
+</article> <!-- card.// -->
+
+<article class="card mb-4">
+<div class="card-body">
+	<h4 class="card-title mb-4">Delivery details</h4>
+	<ul >
+	{% for key,val in order_details.delivery_info.items %}
+	<li name = "{{key}}">{{val}}</li>
+
+	{% endfor %}
+</ul>
+</div> <!-- card-body.// -->
+</article> <!-- card.// -->
+
+
+
+<article class="accordion" id="accordion_pay">
+	<div class="card">
+		<header class="card-header">
+			<img src="{% static './images/misc/payment-paypal.png'%}" class="float-right" height="24"> 
+			<label class="form-check collapsed" data-toggle="collapse" data-target="#pay_paynet">
+				<input class="form-check-input" name="payment-option" checked type="radio" value="option2">
+				<h6 class="form-check-label"> 
+					Paypal 
+				</h6>
+			</label>
+		</header>
+		<div id="pay_paynet" class="collapse show" data-parent="#accordion_pay">
+		<div class="card-body">
+			<p class="text-center text-muted">Connect your PayPal account and use it to pay your bills. You'll be redirected to PayPal to add your billing information.</p>
+			<p class="text-center">
+
+				<div id="paypal-button-container"></div>
+				
+				<br><br>
+			</p>
+		</div> <!-- card body .// -->
+		</div> <!-- collapse .// -->
+	</div> <!-- card.// -->
+	<div class="card">
+	<header class="card-header">
+		<img src="./images/misc/payment-card.png" class="float-right" height="24">  
+		<label class="form-check" data-toggle="collapse" data-target="#pay_payme">
+			<input class="form-check-input" name="payment-option" type="radio" value="option2">
+			<h6 class="form-check-label"> Credit Card  </h6>
+		</label>
+	</header>
+	<div id="pay_payme" class="collapse" data-parent="#accordion_pay">
+		<div class="card-body">
+			<p class="alert alert-success">Some information or instruction</p>
+			<form class="form-inline">
+				<input type="text" class="form-control mr-2" placeholder="xxxx-xxxx-xxxx-xxxx" name="">
+				<input type="text" class="form-control mr-2" style="width: 100px"  placeholder="dd/yy" name="">
+				<input type="number" maxlength="3" class="form-control mr-2"  style="width: 100px"  placeholder="cvc" name="">
+				<button class="btn btn btn-success">Button</button>
+			</form>
+		</div> <!-- card body .// -->
+	</div> <!-- collapse .// -->
+	</div> <!-- card.// -->
+	
+</article> 
+<!-- accordion end.// -->
+  
+		</main> <!-- col.// -->
+		<aside class="col-md-4">
+			<div class="card">
+		<div class="card-body">
+			<dl class="dlist-align">
+			  <dt>Total price:</dt>
+			  <dd class="text-right">{{order_details.cart_total}}</dd>
+			</dl>
+			<dl class="dlist-align">
+			  <dt>Tax:</dt>
+			  <dd class="text-right"> $10.00</dd>
+			</dl>
+			<dl class="dlist-align">
+			  <dt>Total:</dt>
+			  <dd class="text-right text-dark b"><strong>{{total_amount}}</strong></dd>
+			</dl>
+			<hr>
+			<p class="text-center mb-3">
+				<img src="./images/misc/payments.png" height="26">
+			</p>
+			<a href="" id="data-submit" class="btn btn-primary btn-block"> Pay  </a>
+            <div class="paypal" id="paypal-payment"></div>
+		</div> <!-- card-body.// -->
+		</div> <!-- card.// -->
+		</aside> <!-- col.// -->
+	</div> <!-- row.// -->
+
+<!-- ============================ COMPONENT 2 END//  ================================= -->
+<script
+src="https://www.paypal.com/sdk/js?client-id=AcahR__JojXGboHW41TZw_Iw9yOGybI7JeDTxXf8mF93HKbexkhpZ_Bedfd8EmmJSm4WLsYk1Emivcoq"> // Required. Replace YOUR_CLIENT_ID with your sandbox client ID.
+</script>
+
+<script>
+    // This function displays Smart Payment Buttons on your web page.
+
+
+	 paypal.Buttons({
+    createOrder: function(data, actions) {
+      // This function sets up the details of the transaction, including the amount and line item details.
+      return actions.order.create({
+        purchase_units: [{
+          amount: {
+            value: '{{order_details.cart_total}}'
+          }
+        }]
+      });
+    },
+    onApprove: function(data, actions) {
+      // This function captures the funds from the transaction.
+      return actions.order.capture().then(function(details) {
+        // This function shows a transaction success message to your buyer.
+        alert('Transaction completed by ' + details.payer.name.given_name);
+      });
+    }
+  }).render('#paypal-button-container');
+ //This function displays Smart Payment Buttons on your web page.
+
+
+
+	
+  </script>
+
+
+<script>
+
+let submit = document.getElementById('#data-submit')
+let form = document.getElementById('#form-data')
+
+
+// submit.addEventListener('click',function(e){
+// 	form.submit()
+// })
+</script>
+
+{% endblock %}

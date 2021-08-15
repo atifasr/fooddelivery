@@ -1,5 +1,6 @@
 from django.db import models
 from django.db.models.aggregates import Max
+from django.db.models.base import Model
 from django.db.models.deletion import CASCADE
 # from restaurants.models import Restraunts
 from customers.models import Customers
@@ -15,14 +16,16 @@ class PlacedOrder(models.Model):
         auto_now_add=True)
     estimated_delivery_time = models.TimeField()
     actual_delivery_time = models.TimeField()
-    food_ready_time = models.TimeField()
     #total price of order
     total_price = models.DecimalField(max_digits=12, decimal_places=2)
     is_delivered = models.BooleanField(default=False)
+    is_confirmed  = models.BooleanField(blank=True,null=True)
+    city = models.CharField(max_length=25)
+    building = models.CharField(max_length=25)
+    zip_code = models.CharField(max_length=25)
+
+
     
-    @property
-    def get_order_id(self):
-        pass
 
 
 # Customers Comment while placing the order
@@ -61,6 +64,17 @@ class Cart(models.Model):
 
 
 
+#items related to placed order
+class OrderedItems(models.Model):
+    ordereditem = models.ForeignKey(PlacedOrder,on_delete=models.CASCADE, null=True)
+    item_name = models.CharField(max_length=25,blank=True)
+    quantity = models.PositiveIntegerField(null=True)
+    total_price = models.DecimalField(default=0.00, max_digits=10, decimal_places=2)
+    size = models.CharField(max_length=25,blank=True)
+
+
+
+
 class CartItem(models.Model):
     menu_item = models.ForeignKey(to='menus.MenuItem', null=True, on_delete=models.CASCADE)
     cart = models.ForeignKey(Cart, null=True, on_delete=models.CASCADE)
@@ -68,8 +82,8 @@ class CartItem(models.Model):
     total_price = models.DecimalField(default=0.00, max_digits=10, decimal_places=2)
     size = models.CharField(max_length=25)
     
+
     def __str__(self):
         return "This entry contains {} {}(s).".format(self.quantity, self.menu_item)
 
         
-    

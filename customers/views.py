@@ -1,4 +1,4 @@
-from orders.views import get_session
+
 from django.db.utils import DatabaseError
 from django.shortcuts import redirect, render
 from django.contrib.auth import authenticate,login,logout
@@ -56,12 +56,7 @@ def register(request):
         'city':city
     } )
 
-# @csrf_exempt
-# def get_session(request):
-#     session_key = get_session(request)
-#     resp = JsonResponse({'message ':'success'})
-#     resp.set_cookie(key='cartitem',value=session_key,max_age=3600)
-#     return resp
+
     
 
 

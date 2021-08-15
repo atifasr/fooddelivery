@@ -17,15 +17,16 @@
 	<aside class="col-md-3">
 		
 <div class="card">
+	
 	<article class="filter-group">
 		<header class="card-header">
 			<a href="#" data-toggle="collapse" data-target="#collapse_1" aria-expanded="true" class="">
 				<i class="icon-control"></i>
 				<h6 class="title">Categories</h6>
 				<ul class="list-menu">
-					<li for=""><a href="/products/" class="nav-link active">All categories</a></li>
+					<a href="/products/" class="nav-link active"><li name ="">All categories</li></a>
 					{% for category in categories %}
-					<li for=""><a href="/products/?category={{category.name}}">{{category}}</a></li>
+				<a href="/products/?category={{category.name}}"><li >{{category}}</li></a>
 					{% endfor %}
 				</ul>
 			</a>
@@ -43,7 +44,7 @@
 			<div class="card-body">
 			  <label class="checkbox-btn">
 			    <input type="checkbox">
-			    <span class="btn btn-light"> XS </span>
+			    <span class="btn btn-light" name="XS"> XS </span>
 			  </label>
 
 			  <label class="checkbox-btn">
@@ -72,7 +73,7 @@
 				<h6 class="title">Restaurants </h6>
 				<ul class="list-menu">
 					{% for menu in restaurants %}
-					<a href=""><li>{{menu}}</li></a>
+					<a href=""><li name="{{menu}}">{{menu}}</li></a>
 					{% endfor %}
 				</ul>
 			</a>
@@ -106,7 +107,8 @@
 
 				<label class="checkbox-btn">
 			    <input type="checkbox">
-			    <button class="btn btn-primary">Apply</button>
+			    <button class="btn btn-primary" type="submit">Apply</button>
+
 			  </label>
 			</a>
 		</header>
@@ -144,7 +146,7 @@
 						<del class="price-old">${{item.price}}</del>
 					</div> <!-- price-wrap.// -->
 				</div>
-				{% if status %}
+				{% if item.is_added %}
 				<a href="#" class="btn btn-block btn-success">Added ! </a>
 				{% else %}
 				<a href="#" class="btn btn-block btn-primary">Add to cart </a>
