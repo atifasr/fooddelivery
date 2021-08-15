@@ -96,7 +96,7 @@ $(document).ready(function() {
 	<a href="/products" class="btn btn-outline-primary">Store</a>
 	<div class="col-lg  col-md-6 col-sm-12 col">
 		<form action="#" class="search">
-			<div class="input-group w-100">
+			<div class="input-group w-100 search_container">
 			    <input  type="text" class="form-control prod_search" style="width:60%;" placeholder="Search">
 			    
 			    <div class="input-group-append">
@@ -114,7 +114,7 @@ $(document).ready(function() {
 				<div class="d-flex justify-content-end mb-3 mb-lg-0">
 					<div class="widget-header">
 						{% if request.user.is_authenticated %}
-						<small class="title text-muted">{{request.user.username}}</small>
+						<a href="/dashboard/"><small class="title text-muted">{{request.user.username}}</small></a>
 						<div> 
 							<a href="{% url 'customers:log_out' %}">Log out</a> <span class="dark-transp"> | </span>
 						</div>
@@ -163,7 +163,7 @@ $(document).ready(function() {
 
 <header class="section-heading">
 	<a href="./store.html" class="btn btn-outline-primary float-right">See all</a>
-	<h3 class="section-title">Popular products</h3>
+	<h3 class="section-title">Popular ones</h3>
 </header><!-- sect-heading -->
 
 	
@@ -189,21 +189,82 @@ $(document).ready(function() {
 <div class="row">
 <div class="col--md-12">
 	<div class="container-fluid">
-		<h1 class="text-center my-3">Bootstrap 4 Card Carousel</h1>
+		<h3 class="section-title"> Tasy Treat</h3>
 		<div id="myCarousel" class="carousel slide" data-ride="carousel">
 		  <div class="carousel-inner row w-100 mx-auto">
+
 			<div class="carousel-item col-md-4 active">
-			  <div class="card">
-				<div class="card-body">
-				  <h4 class="card-title">Card 1</h4>
-				  <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is
-					a little bit longer.</p>
-				  <p class="card-text">
-					<small class="text-muted">Last updated 3 mins ago</small>
-				  </p>
+				<div class="card">
+				  <div class="card-body">
+					<h4 class="card-title">Card 1</h4>
+					<p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is
+					  a little bit longer.</p>
+					<p class="card-text">
+					  <small class="text-muted">Last updated 3 mins ago</small>
+					</p>
+				  </div>
 				</div>
 			  </div>
-			</div>
+			  <div class="carousel-item col-md-4">
+				<div class="card">
+				  <div class="card-body">
+					<h4 class="card-title">Card 2</h4>
+					<p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is
+					  a little bit longer.</p>
+					<p class="card-text">
+					  <small class="text-muted">Last updated 3 mins ago</small>
+					</p>
+				  </div>
+				</div>
+			  </div>
+			  <div class="carousel-item col-md-4">
+				<div class="card">
+				  <div class="card-body">
+					<h4 class="card-title">Card 3</h4>
+					<p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is
+					  a little bit longer.</p>
+					<p class="card-text">
+					  <small class="text-muted">Last updated 3 mins ago</small>
+					</p>
+				  </div>
+				</div>
+			  </div>
+			  <div class="carousel-item col-md-4">
+				<div class="card">
+				  <div class="card-body">
+					<h4 class="card-title">Card 4</h4>
+					<p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is
+					  a little bit longer.</p>
+					<p class="card-text">
+					  <small class="text-muted">Last updated 3 mins ago</small>
+					</p>
+				  </div>
+				</div>
+			  </div>
+			  <div class="carousel-item col-md-4">
+				<div class="card">
+				  <div class="card-body">
+					<h4 class="card-title">Card 5</h4>
+					<p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is
+					  a little bit longer.</p>
+					<p class="card-text">
+					  <small class="text-muted">Last updated 3 mins ago</small>
+					</p>
+				  </div>
+				</div>
+			  </div>
+			  <div class="carousel-item col-md-4">
+				<div class="card">
+				  <div class="card-body">
+					<h4 class="card-title">Card 6</h4>
+					<p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is
+					  a little bit longer.</p>
+					<p class="card-text">
+					  <small class="text-muted">Last updated 3 mins ago</small>
+					</p>
+				  </div>
+				</div>
+			  </div>
 	
 		  </div>
 		  <div class="container">
@@ -307,14 +368,17 @@ $('document').ready(function(){
 
 	search_bar = document.querySelector('.results')
 	list = document.querySelector('.list')
+	let url_ =''
 
 	let attach_children =(ul,val,id)=>{
 		
 		li = document.createElement('li');
+		li.setAttribute('id','item_page');
 		anch = document.createElement('a');
 		li.innerHTML = val;
-	
-		anch.setAttribute('href','');
+		url_ = document.location.origin+'/item/'+id
+		anch.setAttribute('href',url_);
+		anch.setAttribute('class','item-link');
 		anch.appendChild(li);
 		ul.appendChild(anch);
 
@@ -351,12 +415,15 @@ $('document').ready(function(){
 			}
 		})
 	})
+
 	
 })
 
-	document.querySelector('.prod_search').addEventListener('focusout',function(){
-		console.log('lost focus')
-		list.remove();
+	document.querySelector('.search_container').addEventListener('click',function(e){
+		
+
+		
+		// list.remove();
 		
 	})
 

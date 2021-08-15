@@ -43,22 +43,22 @@
 		<div class="filter-content collapse show" id="collapse_4" style="">
 			<div class="card-body">
 			  <label class="checkbox-btn">
-			    <input type="checkbox">
+			    <input class="size"  type="checkbox" value="XS">
 			    <span class="btn btn-light" name="XS"> XS </span>
 			  </label>
 
 			  <label class="checkbox-btn">
-			    <input type="checkbox">
+			    <input class="size" type="checkbox" value="SM">
 			    <span class="btn btn-light"> SM </span>
 			  </label>
 
 			  <label class="checkbox-btn">
-			    <input type="checkbox">
+			    <input class="size" type="checkbox" value="LG">
 			    <span class="btn btn-light"> LG </span>
 			  </label>
 
 			  <label class="checkbox-btn">
-			    <input type="checkbox">
+			    <input class="size" type="checkbox" value="XXL">
 			    <span class="btn btn-light"> XXL </span>
 			  </label>
 		</div><!-- card-body.// -->
@@ -87,13 +87,13 @@
 
 				<label class="checkbox-btn">
 					<span class="btn btn-light"> Veg </span>
-			    <input type="checkbox">
+			    <input class="food_type" type="checkbox" value="veg">
 			   
 			  </label>
 
 				<label class="checkbox-btn">
 					<span class="btn btn-light"> Non veg </span>
-			    <input type="checkbox">
+			    <input class="food_type" type="checkbox" value="non-veg">
 			   
 			  </label>
 			</a>
@@ -107,7 +107,7 @@
 
 				<label class="checkbox-btn">
 			    <input type="checkbox">
-			    <button class="btn btn-primary" type="submit">Apply</button>
+			   <a href="/products/?"> <button class="btn btn-primary filter-btn" type="submit">Apply</button></a>
 
 			  </label>
 			</a>
@@ -175,7 +175,32 @@
 </div> <!-- container .//  -->
 </section>
 <!-- ========================= SECTION CONTENT END// ========================= -->
+<script>
+let filter_btn = document.querySelector('.filter-btn');
+var sizes = document.querySelectorAll('.size')
+var food_types = document.querySelectorAll('.food_type')
+let len = sizes.length;
+let food_type_len = food_types.length;
+filter_btn.addEventListener('click',function(e){
+	e.preventDefault();
+	for(let i = 0 ; i< len ;i++)
+	{
+		if (sizes[i].checked)
+		{
+			console.log(sizes[i].value)
+			link = filter_btn.parentElement.getAttribute("href")
+			console.log(link)
+			link = link+'size='+sizes[i].value+'&'
+			filter_btn.parentElement.setAttribute("href",link)
+			console.log(link)
+		}
+	}
+	
+})
 
+
+
+</script>
 
 {% endblock %}
 

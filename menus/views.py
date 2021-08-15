@@ -46,8 +46,8 @@ def menus(request):
 def products(request):
     if request.method == 'GET':
         query = request.GET.get('category')
-        trial = request.POST.get('XS')
-        print(trial)
+        size = request.GET.get('size')
+        print(size)
         user=Customers.objects.get(user=request.user)
         try:
             cartitem = list(CartItem.objects.filter(cart__user=user).values_list('menu_item__id',flat=True))
@@ -56,6 +56,8 @@ def products(request):
       
         if query:
             menu_items = MenuItem.objects.filter(category__name=query).order_by('-date_added')
+            if size:
+                menu_items = menu_items.filter(size=size)
         else:
             menus_added = {}
             menu_items =[]

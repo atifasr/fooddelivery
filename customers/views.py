@@ -84,3 +84,11 @@ def log_out(request):
     if request.method == 'GET':
         logout(request)
         return redirect('/login_user/')
+
+
+
+
+
+def dashboard(request):
+    if request.method == 'GET':
+        return render(request,'dashboard.html')
