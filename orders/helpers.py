@@ -1,5 +1,8 @@
 import json
 
+
+
+# get cart from cookies 
 def cartItems(request):
     data = request.COOKIES.get('cartitem')
     data =json.loads(data)

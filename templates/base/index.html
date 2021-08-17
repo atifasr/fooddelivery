@@ -114,6 +114,9 @@ $(document).ready(function() {
 				<div class="d-flex justify-content-end mb-3 mb-lg-0">
 					<div class="widget-header">
 						{% if request.user.is_authenticated %}
+						<div> 
+							<a href="{% url 'orders:orders_placed' %}">Orders</a>
+						</div>
 						<a href="/dashboard/"><small class="title text-muted">{{request.user.username}}</small></a>
 						<div> 
 							<a href="{% url 'customers:log_out' %}">Log out</a> <span class="dark-transp"> | </span>

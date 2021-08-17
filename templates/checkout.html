@@ -92,6 +92,27 @@
 		</div> <!-- collapse .// -->
 	</div> <!-- card.// -->
 	<div class="card">
+		<header class="card-header">
+			
+			<label class="form-check collapsed" data-toggle="collapse" data-target="#pay_paynet">
+				<input class="form-check-input" name="payment-option" checked type="radio" value="option2">
+				<h6 class="form-check-label"> 
+					Razor Pay 
+				</h6>
+			</label>
+		</header>
+		<div id="pay_paynet" class="collapse show" data-parent="#accordion_pay">
+		<div class="card-body">
+			<p class="text-center text-muted">Razor your PayPal account and use it to pay your bills. You'll be redirected to PayPal to add your billing information.</p>
+			<p class="text-center">
+
+				<button id="rzp-button1" class="btn btn-success form-btn">Pay</button>
+
+			</p>
+		</div> <!-- card body .// -->
+		</div> <!-- collapse .// -->
+	</div> <!-- card.// -->
+	<div class="card">
 	<header class="card-header">
 		<img src="./images/misc/payment-card.png" class="float-right" height="24">  
 		<label class="form-check" data-toggle="collapse" data-target="#pay_payme">
@@ -121,7 +142,7 @@
 		<div class="card-body">
 			<dl class="dlist-align">
 			  <dt>Total price:</dt>
-			  <dd class="text-right">{{order_details.cart_total}}</dd>
+			  <dd class="text-right" name='order_total'>{{order_details.cart_total}}</dd>
 			</dl>
 			<dl class="dlist-align">
 			  <dt>Tax:</dt>
@@ -143,6 +164,50 @@
 	</div> <!-- row.// -->
 
 <!-- ============================ COMPONENT 2 END//  ================================= -->
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+	var options = {
+		"key": "rzp_test_IJTmQFDB2f2XCO", // Enter the Key ID generated from the Dashboard
+		"amount": parseInt("{{order_details.cart_total}}")*100, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+		"currency": "INR",
+		"name": "Acme Corp",
+		"description": "Test Transaction",
+		"image": "https://example.com/your_logo",
+		"order_id": "", //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+		"callback_url": "https://eneqd3r9zrjok.x.pipedream.net/",
+		"prefill": {
+			"name": "Gaurav Kumar",
+			"email": "gaurav.kumar@example.com",
+			"contact": "9999999999"
+		},
+		"handler": function (response){
+				alert(response.razorpay_payment_id);
+				alert(response.razorpay_order_id);
+				alert(response.razorpay_signature)},
+				"notes": {
+						"address": "Razorpay Corporate Office"
+		},
+		"theme": {
+			"color": "#3399cc"
+		}
+	};
+	var rzp1 = new Razorpay(options);
+	document.getElementById('rzp-button1').onclick = function(e){
+		rzp1.open();
+		e.preventDefault();
+	}
+	</script>
+
+
+
+
+
+
+
+
+
+<!-- 
 <script
 src="https://www.paypal.com/sdk/js?client-id=AcahR__JojXGboHW41TZw_Iw9yOGybI7JeDTxXf8mF93HKbexkhpZ_Bedfd8EmmJSm4WLsYk1Emivcoq"> // Required. Replace YOUR_CLIENT_ID with your sandbox client ID.
 </script>
@@ -176,7 +241,7 @@ src="https://www.paypal.com/sdk/js?client-id=AcahR__JojXGboHW41TZw_Iw9yOGybI7JeD
 
 	
   </script>
-
+ -->
 
 <script>
 

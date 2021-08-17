@@ -7,6 +7,10 @@ from menus.models import MenuItem
 import json
 from collections import namedtuple
 from .helpers import cartItems
+import datetime
+from random import randrange
+import razorpay
+from django.conf import settings
 # Create your views here.
 
 
@@ -132,6 +136,14 @@ def remove_item(request,item_id):
 
 
 
+#simple order id generation
+def gen_orderid(quantity,zip_code,total_price):
+    rand_range = randrange(1000)
+    order_id = 'OD'+str(quantity)+str(zip_code)+str(rand_range)+str(int(total_price)) 
+    return order_id
+    
+
+
 def place_order(request):
    
     total=0
@@ -181,7 +193,8 @@ def place_order(request):
             delivery_info["street"] = request.POST.get('street')
             
             print(delivery_info)
-
+            order_id = gen_orderid(ordereditems[0]['quantity'],delivery_info['zip_code'],ordereditems[0]['total_price'])
+            print(order_id)
             order = {
                 'ordereditems':ordereditems,
                 'contact_info':contact,
@@ -212,8 +225,28 @@ def checkout(request):
 
     
     if request.method =="POST":
-        name = request.POST.get('first_name')
-        print(name)
-        
+        first_name = request.POST.get('first_name')
+        last_name = request.POST.get('last_name')
+        mob_no = request.POST.get('mob_no')
+        email = request.POST.get('email')
+        print('Mobile number -> ',mob_no)
+        order_total_amount = request.POST.get('order_total')
+
+
+
+        client = razorpay.Client(auth=(settings.Razor_key, settings.Razor_sec_key))
+
+        order_amount = order_total_amount*100
+        order_currency = 'INR'
+        order_receipt = 'order_rcptid_11'
+        notes = {'Shipping address': 'Bommanahalli, Bangalore'}   # OPTIONAL
+
+        client.order.create(amount=order_amount, currency=order_currency, receipt=order_receipt, notes=notes)
 
     return render(request,'checkout.html')
+
+
+
+
+def orders_placed(request):
+    return render(request,'orders.html')
