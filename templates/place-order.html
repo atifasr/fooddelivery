@@ -15,7 +15,7 @@
 			<figure class="itemside  mb-4">
 				<div class="aside"><img src="{{item.menu_item.image.url}}" class="border img-sm"></div>
 				<figcaption class="info">
-					<p>{{item.menu_item.name}}</p>
+					<span>{{item.menu_item.item_name}}</span>
 					<span class="text-muted">{{item.quantity}}x = ₹{{item.total_price}} </span>
 				</figcaption>
 			</figure>
@@ -45,26 +45,27 @@
 <article class="card mb-4">
 <div class="card-body">
 	<h4 class="card-title mb-4">Contact info</h4>
-	<form action="">
+	<form id='form-data' action="" method="POST">
+		{% csrf_token %}
 		<div class="row">
 			<div class="form-group col-sm-6">
 				<label>Frst name</label>
-				<input type="text" placeholder="Type here" class="form-control" value="{{customer.user.first_name}}">
+				<input name="first_name" type="text" placeholder="Type here" class="form-control" value="{{customer.user.first_name}}">
 			</div>
 			<div class="form-group col-sm-6">
 				<label>Last name</label>
-				<input type="text" placeholder="Type here" class="form-control" value="{{customer.user.last_name}}">
+				<input name="last_name" type="text" placeholder="Type here" class="form-control" value="{{customer.user.last_name}}">
 			</div>
 			<div class="form-group col-sm-6">
 				<label>Phone</label>
-				<input type="text" value="+91" class="form-control" value="{{customer.contact_no}">
+				<input name="mob_no" type="text" value="+91" class="form-control" value="{{customer.contact_no}">
 			</div>
 			<div class="form-group col-sm-6">
 				<label>Email</label>
-				<input type="email" placeholder="example@gmail.com" class="form-control" value="{{customer.user.email}}">
+				<input name="email" type="email" placeholder="example@gmail.com" class="form-control" value="{{customer.user.email}}">
 			</div>
 		</div> <!-- row.// -->	
-	</form>
+
 </div> <!-- card-body.// -->
 </article> <!-- card.// -->
 
@@ -72,13 +73,13 @@
 <article class="card mb-4">
 <div class="card-body">
 	<h4 class="card-title mb-4">Delivery info</h4>
-	<form action="">
+
 			
 
 		<div class="row">
 				<div class="form-group col-sm-6">
 					<label>Country*</label>
-					<select name="" class="form-control">
+					<select name="country" class="form-control">
 						<option value="">India</option>
 						<option value="">United States</option>
 						<option value="">France</option>
@@ -87,15 +88,15 @@
 				</div>
 				<div class="form-group col-sm-6">
 					<label>State*</label>
-					<input type="text" placeholder="Type here" class="form-control" value="{{customer.city}}">
+					<input name="state" type="text" placeholder="Type here" class="form-control" value="{{customer.city}}">
 				</div>
 				<div class="form-group col-sm-8">
 					<label>Street*</label>
-					<input type="text" placeholder="Type here" class="form-control">
+					<input name="street" type="text" placeholder="Type here" class="form-control">
 				</div>
 				<div class="form-group col-sm-4">
 					<label>Building</label>
-					<input type="text" placeholder="" class="form-control">
+					<input name="building" type="text" placeholder="" class="form-control">
 				</div>
 				<div class="form-group col-sm-4">
 					<label>House</label>
@@ -103,62 +104,19 @@
 				</div>
 				<div class="form-group col-sm-4">
 					<label>Postal code</label>
-					<input type="text" placeholder="" class="form-control">
+					<input name="postal_code" type="text" placeholder="" class="form-control">
 				</div>
 				<div class="form-group col-sm-4">
 					<label>Zip</label>
-					<input type="text" placeholder="" class="form-control" value="{{customer.city.zip_code}}">
+					<input name="zip_code" type="text" placeholder="" class="form-control" value="{{customer.city.zip_code}}">
 				</div>
 		</div> <!-- row.// -->	
-	</form>
+
 </div> <!-- card-body.// -->
 </article> <!-- card.// -->
 
 
-<article class="accordion" id="accordion_pay">
-	<div class="card">
-		<header class="card-header">
-			<img src="{% static './images/misc/payment-paypal.png'%}" class="float-right" height="24"> 
-			<label class="form-check collapsed" data-toggle="collapse" data-target="#pay_paynet">
-				<input class="form-check-input" name="payment-option" checked type="radio" value="option2">
-				<h6 class="form-check-label"> 
-					Paypal 
-				</h6>
-			</label>
-		</header>
-		<div id="pay_paynet" class="collapse show" data-parent="#accordion_pay">
-		<div class="card-body">
-			<p class="text-center text-muted">Connect your PayPal account and use it to pay your bills. You'll be redirected to PayPal to add your billing information.</p>
-			<p class="text-center">
-				<a href="#"><img src="{% static './images/misc/btn-paypal.png' %}" height="32"></a>
-				<br><br>
-			</p>
-		</div> <!-- card body .// -->
-		</div> <!-- collapse .// -->
-	</div> <!-- card.// -->
-	<div class="card">
-	<header class="card-header">
-		<img src="./images/misc/payment-card.png" class="float-right" height="24">  
-		<label class="form-check" data-toggle="collapse" data-target="#pay_payme">
-			<input class="form-check-input" name="payment-option" type="radio" value="option2">
-			<h6 class="form-check-label"> Credit Card  </h6>
-		</label>
-	</header>
-	<div id="pay_payme" class="collapse" data-parent="#accordion_pay">
-		<div class="card-body">
-			<p class="alert alert-success">Some information or instruction</p>
-			<form class="form-inline">
-				<input type="text" class="form-control mr-2" placeholder="xxxx-xxxx-xxxx-xxxx" name="">
-				<input type="text" class="form-control mr-2" style="width: 100px"  placeholder="dd/yy" name="">
-				<input type="number" maxlength="3" class="form-control mr-2"  style="width: 100px"  placeholder="cvc" name="">
-				<button class="btn btn btn-success">Button</button>
-			</form>
-		</div> <!-- card body .// -->
-	</div> <!-- collapse .// -->
-	</div> <!-- card.// -->
-	
-</article> 
-<!-- accordion end.// -->
+
   
 		</main> <!-- col.// -->
 		<aside class="col-md-4">
@@ -180,8 +138,8 @@
 			<p class="text-center mb-3">
 				<img src="./images/misc/payments.png" height="26">
 			</p>
-			<a href="./place-order.html" class="btn btn-primary btn-block"> Place Order </a>
-			
+			 <button type="submit" class="btn btn-primary">Continue </button>
+		</form>
 		</div> <!-- card-body.// -->
 		</div> <!-- card.// -->
 		</aside> <!-- col.// -->
@@ -189,5 +147,16 @@
 
 <!-- ============================ COMPONENT 2 END//  ================================= -->
 
+
+<script>
+
+let submit = document.getElementById('#data-submit')
+let form = document.getElementById('#form-data')
+
+
+// submit.addEventListener('click',function(e){
+// 	form.submit()
+// })
+</script>
 
 {% endblock %}

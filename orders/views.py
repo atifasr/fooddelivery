@@ -1,4 +1,4 @@
-from django.core.exceptions import ObjectDoesNotExist
+from django.core.exceptions import AppRegistryNotReady, ObjectDoesNotExist
 from customers.models import Customers
 from django.contrib import messages
 from .models import Cart,CartItem,PlacedOrder
@@ -7,16 +7,11 @@ from menus.models import MenuItem
 import json
 from collections import namedtuple
 from .helpers import cartItems
+import datetime
+from random import randrange
+import razorpay
+from django.conf import settings
 # Create your views here.
-
-#helper function for session retreival
-def get_session(request):
-    if request.session.session_key:
-        return request.session.session_key
-    else:
-        request.session.save()
-        return request.session.session_key
-        
 
 
 
@@ -48,15 +43,17 @@ def add_cart(request,menu_id):
         menuitem = MenuItem.objects.get(id=menu_id)
         menuitem.is_added =True
         menuitem.save()
-        
+
         item,item_created = CartItem.objects.get_or_create(menu_item=menuitem,cart=cart,defaults={
             'menu_item':menuitem,'quantity': 1,'total_price':menuitem.price,'cart':cart})
-        cart.count+=1
-        cart.total = float(cart.total) + float(item.quantity * item.menu_item.price)
-        cart.save()
+        
         print(item)
         if not item_created:
             add_item(item)
+
+        cart.count +=1
+        cart.total = float(cart.total) + float(item.menu_item.price)
+        cart.save()
     
     else:
         # get data from dictionary
@@ -98,7 +95,9 @@ def view_cart(request):
                 cust = Customers.objects.get(user= request.user)
                 cart=Cart.objects.get(user=cust)
                 cartitem=CartItem.objects.filter(cart=cart)
-                total_value= cart.total
+                total_value = cart.total
+                total_amount = float(total_value) * 0.85
+
             except ObjectDoesNotExist:
                 messages.add_message(request,messages.INFO,'Cart is empty!')
                 cartitem=None
@@ -110,7 +109,8 @@ def view_cart(request):
        
         return render(request,'cart/cart.html',{
             'cartitem':cartitem,
-            'total_value':total_value
+            'total_value':total_value,
+            'total_amount':total_amount
 
         })
 
@@ -136,29 +136,117 @@ def remove_item(request,item_id):
 
 
 
+#simple order id generation
+def gen_orderid(quantity,zip_code,total_price):
+    rand_range = randrange(1000)
+    order_id = 'OD'+str(quantity)+str(zip_code)+str(rand_range)+str(int(total_price)) 
+    return order_id
+    
+
+
 def place_order(request):
-    if request.method=='GET':
-        total=0
-        cust=None
-        if request.user.is_authenticated:
+   
+    total=0
+    cust=None
+    if request.user.is_authenticated:
+        
+        if request.method=="GET":
+
             try:
                 cust = Customers.objects.get(user=request.user)
                 cart = Cart.objects.get(user=cust)
                 cartitems = CartItem.objects.filter(cart=cart)
-                total=cart.total
-            except ObjectDoesNotExist:
-                print('objects not found ')
-        else:
-            cartitems = cartItems(request)
+                total = cart.total
+                # print(cartitems)
+                
+            except Exception as e:
+                print('exception-> ',e)
+
+        if request.method== 'POST':
+            cust = Customers.objects.get(user=request.user)
+            cart = Cart.objects.get(user=cust)
+            total = cart.total
+            cartitems = CartItem.objects.filter(cart=cart)
+            ordereditems = []
+            ordered_item={}
+            for item in cartitems:
+                ordered_item['item_name']=item.menu_item.item_name
+                ordered_item['quantity']=item.quantity
+                ordered_item['total_price']=item.total_price
+                ordered_item['size']=item.size
+                ordereditems.append(ordered_item)
+                ordered_item={}
+            print(ordereditems)
+            contact={}
+            contact["first_name"] = request.POST.get('first_name')
+            contact["last_name"] = request.POST.get('last_name')
+            contact["mob_no"] = request.POST.get('mob_no')
+            contact["email"] = request.POST.get('email')
+            print(contact)
+            delivery_info ={}
+
+           
+            delivery_info["city"] = request.POST.get('state')
+            delivery_info["building"] = request.POST.get('building')
+            delivery_info["zip_code"] = request.POST.get('zip_code')
+            delivery_info["postal_code"] = request.POST.get('postal_code')
+            delivery_info["street"] = request.POST.get('street')
+            
+            print(delivery_info)
+            order_id = gen_orderid(ordereditems[0]['quantity'],delivery_info['zip_code'],ordereditems[0]['total_price'])
+            print(order_id)
+            order = {
+                'ordereditems':ordereditems,
+                'contact_info':contact,
+                'delivery_info':delivery_info,
+                'cart_total':total
+            }
+          
+            return render(request,'checkout.html',{
+                'order_details':order
+            })
+         
+    else:
+        cartitems = cartItems(request)        
+            # return render(request,'checkout.html',{
+            #     'ordered_item':ordered_item
+            # })
+
+
+    return render(request,'place-order.html',{
+                'cartitems':cartitems,
+                'total_amount':total,
+                'customer':cust,
+                
+            })
+
+
+def checkout(request):
 
     
-        return render(request,'place-order.html',{
-            'cartitems':cartitems,
-            'total_amount':total,
-            'customer':cust,
-        })
-    
+    if request.method =="POST":
+        first_name = request.POST.get('first_name')
+        last_name = request.POST.get('last_name')
+        mob_no = request.POST.get('mob_no')
+        email = request.POST.get('email')
+        print('Mobile number -> ',mob_no)
+        order_total_amount = request.POST.get('order_total')
 
-    if request.method == 'POST':
-        pass
 
+
+        client = razorpay.Client(auth=(settings.Razor_key, settings.Razor_sec_key))
+
+        order_amount = order_total_amount*100
+        order_currency = 'INR'
+        order_receipt = 'order_rcptid_11'
+        notes = {'Shipping address': 'Bommanahalli, Bangalore'}   # OPTIONAL
+
+        client.order.create(amount=order_amount, currency=order_currency, receipt=order_receipt, notes=notes)
+
+    return render(request,'checkout.html')
+
+
+
+
+def orders_placed(request):
+    return render(request,'orders.html')

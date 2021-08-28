@@ -176,3 +176,9 @@ EMAIL_PORT = 587
 EMAIL_HOST_USER = 'ati.zai006@gmail.com'
 EMAIL_HOST_PASSWORD = '3strongati@'
 EMAIL_USE_TLS = True
+
+
+
+
+Razor_key= 'rzp_test_IJTmQFDB2f2XCO'
+Razor_sec_key = 'p79UdplbOgurzcMJDRqMHxjW'

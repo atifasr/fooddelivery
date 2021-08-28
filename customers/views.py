@@ -1,4 +1,4 @@
-from orders.views import get_session
+
 from django.db.utils import DatabaseError
 from django.shortcuts import redirect, render
 from django.contrib.auth import authenticate,login,logout
@@ -10,7 +10,7 @@ from django.db import transaction,IntegrityError
 from orders.models import Cart
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import JsonResponse
-
+import asyncio
 
 # Create your views here.
 
@@ -56,12 +56,7 @@ def register(request):
         'city':city
     } )
 
-# @csrf_exempt
-# def get_session(request):
-#     session_key = get_session(request)
-#     resp = JsonResponse({'message ':'success'})
-#     resp.set_cookie(key='cartitem',value=session_key,max_age=3600)
-#     return resp
+
     
 
 
@@ -89,3 +84,13 @@ def log_out(request):
     if request.method == 'GET':
         logout(request)
         return redirect('/login_user/')
+
+
+
+
+
+def dashboard(request):
+    if request.method == 'GET':
+        return render(request,'dashboard.html')
+
+
