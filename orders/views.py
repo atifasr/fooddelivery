@@ -37,7 +37,8 @@ def add_cart(request,menu_id):
     # add cart for logged in user
      #check if cart exists or not (id not then create)
     if request.user.is_authenticated:
-        cust = Customers.objects.get(user= request.user)
+        print(request.user)
+        cust = Customers.objects.get(user = request.user)
         cart,created = Cart.objects.get_or_create(user=cust,defaults={
             'user':cust
         })
@@ -53,7 +54,7 @@ def add_cart(request,menu_id):
             add_item(item)
 
         cart.count +=1
-        cart.total = float(cart.total) + float(item.menu_item.price)
+        cart.total = float(cart.total) + float(item.total_price)
         cart.save()
     
     else:
@@ -73,7 +74,7 @@ def remove_cart(request,menu_id):
         item = CartItem.objects.get(menu_item__id = menu_id,cart=cart)
         print(item)
         cart.count -= 1
-        cart.total = float(cart.total) - float(item.quantity * item.menu_item.price)
+        cart.total = float(cart.total) - float(item.total_price)
         cart.save()
         if item.quantity == 0:
             item.delete()
