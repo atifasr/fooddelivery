@@ -21,6 +21,7 @@ def add_item(item):
     item.quantity +=1
     item.total_price += item.menu_item.price
     item.save()
+    print(item.total_price)
     
 
 def decrease_item(item):
@@ -49,12 +50,13 @@ def add_cart(request,menu_id):
         item,item_created = CartItem.objects.get_or_create(menu_item=menuitem,cart=cart,defaults={
             'menu_item':menuitem,'quantity': 1,'total_price':menuitem.price,'cart':cart})
         
-        print(item)
+        # print(item)
         if not item_created:
             add_item(item)
-
+        print(item)
         cart.count +=1
-        cart.total = float(cart.total) + float(item.total_price)
+        cart.total = float(cart.total + int(item.menu_item.price))
+        print(cart.total)
         cart.save()
     
     else:
@@ -74,7 +76,7 @@ def remove_cart(request,menu_id):
         item = CartItem.objects.get(menu_item__id = menu_id,cart=cart)
         print(item)
         cart.count -= 1
-        cart.total = float(cart.total) - float(item.total_price)
+        cart.total = float(cart.total - int(item.menu_item.price))
         cart.save()
         if item.quantity == 0:
             item.delete()
@@ -94,8 +96,8 @@ def view_cart(request):
     
         if request.user.is_authenticated:
             try:
-                cust = Customers.objects.get(user= request.user)
-                cart=Cart.objects.get(user=cust)
+                customer = Customers.objects.get(user= request.user)
+                cart=Cart.objects.get(user=customer)
                 cartitem=CartItem.objects.filter(cart=cart)
                 total_value = cart.total
                 total_amount = float(total_value) * 0.85
@@ -218,10 +220,9 @@ def place_order(request):
                 
             })
 
- 
-       
-
 client = razorpay.Client(auth=(settings.RAZOR_KEY, settings.RAZOR_SEC_KEY))
+
+
 @csrf_exempt
 def checkout(request):
     #process order 

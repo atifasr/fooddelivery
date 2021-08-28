@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'customers',
     'restaurants',
     'rest_framework',
+    'migration_fixer',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
