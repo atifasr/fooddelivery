@@ -51,6 +51,9 @@ class MenuItem(models.Model):
     # def discounted_price(self):
     #     return self.price*self.offer.discount_percent
 
+    def get_restaurants(self):
+        return "\n".join([p.name for p in self.restruant.all()])
+
 
 class Ingredients(models.Model):
     name = models.CharField(max_length=25)

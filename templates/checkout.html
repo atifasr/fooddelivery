@@ -10,7 +10,8 @@
 	<h4 class="card-title mb-4">Review cart</h4>
 	<div class="row">
 		{% if request.user.is_authenticated %}
-		{% for item in order_details.ordereditems %}
+
+		{% for item in request.session.order.order_details %}
 		<div class="col-md-6">
 			<figure class="itemside  mb-4">
 				<div class="aside"><img src="{{item.menu_item.image.url}}" class="border img-sm"></div>
@@ -41,13 +42,14 @@
 </div> <!-- card-body.// -->
 </article> <!-- card.// -->
 
-
+<form action="" method="POST" class="data-form">
+	{% csrf_token %}
 <article class="card mb-4">
 <div class="card-body">
 	<h4 class="card-title mb-4">Order Review</h4>
 	<ul >
-	{% for key,val in order_details.contact_info.items %}
-	<li name="{{key}}">{{val}}</li>
+	{% for key,value in request.session.order.contact_info.items %}
+	<li name="{{key}}">{{value}}</li>
 
 	{% endfor %}
 </ul>
@@ -58,15 +60,18 @@
 <div class="card-body">
 	<h4 class="card-title mb-4">Delivery details</h4>
 	<ul >
-	{% for key,val in order_details.delivery_info.items %}
-	<li name = "{{key}}">{{val}}</li>
+	{% for key,value in request.session.order.delivery_info.items %}
+	<li name="{{key}}">{{value}}</li>
 
 	{% endfor %}
+
+	<button type="submit" style="visibility: hidden;"></button>
+	</form>
 </ul>
 </div> <!-- card-body.// -->
 </article> <!-- card.// -->
 
-
+<button class="new_button">test</button>
 
 <article class="accordion" id="accordion_pay">
 	<div class="card">
@@ -142,7 +147,7 @@
 		<div class="card-body">
 			<dl class="dlist-align">
 			  <dt>Total price:</dt>
-			  <dd class="text-right" name='order_total'>{{order_details.cart_total}}</dd>
+			  <dd class="text-right" name='order_total'>{{request.session.order.cart_total}}</dd>
 			</dl>
 			<dl class="dlist-align">
 			  <dt>Tax:</dt>
@@ -150,7 +155,7 @@
 			</dl>
 			<dl class="dlist-align">
 			  <dt>Total:</dt>
-			  <dd class="text-right text-dark b"><strong>{{total_amount}}</strong></dd>
+			  <dd class="text-right text-dark b"><strong>{{request.session.order.cart_total}}</strong></dd>
 			</dl>
 			<hr>
 			<p class="text-center mb-3">
@@ -169,7 +174,7 @@
 <script>
 	var options = {
 		"key": "rzp_test_IJTmQFDB2f2XCO", // Enter the Key ID generated from the Dashboard
-		"amount": parseInt("{{order_details.cart_total}}")*100, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+		"amount": parseInt("{{request.session.order.cart_total}}")*100, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
 		"currency": "INR",
 		"name": "Acme Corp",
 		"description": "Test Transaction",
@@ -181,11 +186,7 @@
 			"email": "gaurav.kumar@example.com",
 			"contact": "9999999999"
 		},
-		"handler": function (response){
-				alert(response.razorpay_payment_id);
-				alert(response.razorpay_order_id);
-				alert(response.razorpay_signature)},
-				"notes": {
+		"notes": {
 						"address": "Razorpay Corporate Office"
 		},
 		"theme": {
@@ -193,14 +194,28 @@
 		}
 	};
 	var rzp1 = new Razorpay(options);
+	
 	document.getElementById('rzp-button1').onclick = function(e){
 		rzp1.open();
 		e.preventDefault();
+	
 	}
 	</script>
 
 
+	<script>
+		let data_submit = document.querySelector('.data-form');
 
+		let button = document.querySelector('.new_button')
+		button.addEventListener('click',function(e)
+		{
+			data_submit.submit();
+
+		})
+
+			
+
+	</script>
 
 
 

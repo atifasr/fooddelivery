@@ -22,7 +22,7 @@ def menus(request):
     if request.method == 'GET':
         menu_list = MenuItem.objects.all().order_by('-date_added')
         categories = list(Category.objects.all().values_list('name',flat=True))
-        total_count =0
+        total_count = 0
         
         if request.user.is_authenticated:
             try:

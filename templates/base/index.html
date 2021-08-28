@@ -179,6 +179,11 @@ $(document).ready(function() {
 			<a href="{% url 'menus:item' item.id %}" class="img-wrap"> <img src="{{item.image_url}}"> </a>
 			<figcaption class="info-wrap">
 				<a href="{% url 'menus:item' item.id %}" class="title">{{item.item_name}}</a>
+				<ul>
+				{% for name in item.restruant.all %}
+				<a href="" class="name"><li>{{name}}</li></a>
+				{% endfor %}
+			</ul>
 				<div class="price mt-1">{{item.price}}</div> <!-- price-wrap.// -->
 			</figcaption>
 		</div>

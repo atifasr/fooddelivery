@@ -10,7 +10,7 @@ class CategoryAdmin(admin.ModelAdmin):
 
 
 class MenuItemAdmin(ModelAdmin):
-    list_display = ('category', 'item_name', 'description', 'price')
+    list_display = ('category', 'item_name', 'description', 'price','get_restaurants')
 
 
 class IngredientsAdmin(admin.ModelAdmin):

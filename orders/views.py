@@ -1,7 +1,7 @@
 from django.core.exceptions import AppRegistryNotReady, ObjectDoesNotExist
 from customers.models import Customers
 from django.contrib import messages
-from .models import Cart,CartItem,PlacedOrder
+from .models import Cart,CartItem, OrderedItems,PlacedOrder
 from django.shortcuts import redirect, render, resolve_url
 from menus.models import MenuItem
 import json
@@ -11,6 +11,7 @@ import datetime
 from random import randrange
 import razorpay
 from django.conf import settings
+from django.views.decorators.csrf import csrf_exempt
 # Create your views here.
 
 
@@ -116,9 +117,6 @@ def view_cart(request):
 
 
 
-
-
-
 def remove_item(request,item_id):
     if request.method == 'GET':
         if request.user.is_authenticated:
@@ -172,39 +170,38 @@ def place_order(request):
             for item in cartitems:
                 ordered_item['item_name']=item.menu_item.item_name
                 ordered_item['quantity']=item.quantity
-                ordered_item['total_price']=item.total_price
+                ordered_item['total_price']=int(item.total_price)
                 ordered_item['size']=item.size
                 ordereditems.append(ordered_item)
                 ordered_item={}
-            print(ordereditems)
+
+
+            #storing contact details
             contact={}
             contact["first_name"] = request.POST.get('first_name')
             contact["last_name"] = request.POST.get('last_name')
             contact["mob_no"] = request.POST.get('mob_no')
             contact["email"] = request.POST.get('email')
             print(contact)
-            delivery_info ={}
 
-           
+            #storing delivery details
+            delivery_info ={}
             delivery_info["city"] = request.POST.get('state')
             delivery_info["building"] = request.POST.get('building')
             delivery_info["zip_code"] = request.POST.get('zip_code')
             delivery_info["postal_code"] = request.POST.get('postal_code')
             delivery_info["street"] = request.POST.get('street')
-            
-            print(delivery_info)
+         
             order_id = gen_orderid(ordereditems[0]['quantity'],delivery_info['zip_code'],ordereditems[0]['total_price'])
-            print(order_id)
-            order = {
-                'ordereditems':ordereditems,
+
+            # Saving details in session
+            request.session['order']={
+                'order_details':ordereditems,
                 'contact_info':contact,
                 'delivery_info':delivery_info,
-                'cart_total':total
+                'cart_total':int(total)
             }
-          
-            return render(request,'checkout.html',{
-                'order_details':order
-            })
+            return redirect('/checkout')
          
     else:
         cartitems = cartItems(request)        
@@ -220,29 +217,24 @@ def place_order(request):
                 
             })
 
+ 
+       
 
+client = razorpay.Client(auth=(settings.RAZOR_KEY, settings.RAZOR_SEC_KEY))
+@csrf_exempt
 def checkout(request):
+    #process order 
 
-    
-    if request.method =="POST":
-        first_name = request.POST.get('first_name')
-        last_name = request.POST.get('last_name')
-        mob_no = request.POST.get('mob_no')
-        email = request.POST.get('email')
-        print('Mobile number -> ',mob_no)
-        order_total_amount = request.POST.get('order_total')
-
-
-
-        client = razorpay.Client(auth=(settings.Razor_key, settings.Razor_sec_key))
-
-        order_amount = order_total_amount*100
+    if request.method == 'POST':
+        order_amount = 50000
         order_currency = 'INR'
         order_receipt = 'order_rcptid_11'
         notes = {'Shipping address': 'Bommanahalli, Bangalore'}   # OPTIONAL
 
         client.order.create(amount=order_amount, currency=order_currency, receipt=order_receipt, notes=notes)
 
+        print('data submitted ')
+  
     return render(request,'checkout.html')
 
 
