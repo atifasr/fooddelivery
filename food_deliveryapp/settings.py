@@ -180,5 +180,5 @@ EMAIL_USE_TLS = True
 
 
 
-Razor_key= 'rzp_test_IJTmQFDB2f2XCO'
-Razor_sec_key = 'p79UdplbOgurzcMJDRqMHxjW'
+RAZOR_KEY= 'rzp_test_IJTmQFDB2f2XCO'
+RAZOR_SEC_KEY = 'p79UdplbOgurzcMJDRqMHxjW'

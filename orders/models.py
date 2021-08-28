@@ -12,7 +12,7 @@ class PlacedOrder(models.Model):
     customer = models.ForeignKey(Customers,on_delete=models.CASCADE)
     order_id= models.CharField(max_length=255)
     restraunt = models.ForeignKey(to='restaurants.Restaurants', on_delete=models.CASCADE)
-    order_time = models.TimeField(
+    order_time = models.DateTimeField(
         auto_now_add=True)
     estimated_delivery_time = models.TimeField()
     actual_delivery_time = models.TimeField()
@@ -21,7 +21,7 @@ class PlacedOrder(models.Model):
     is_delivered = models.BooleanField(default=False)
     is_confirmed  = models.BooleanField(blank=True,null=True)
     city = models.CharField(max_length=25)
-    building = models.CharField(max_length=25)
+    building = models.CharField(max_length=25,blank=True)
     zip_code = models.CharField(max_length=25)
 
 
@@ -67,7 +67,7 @@ class Cart(models.Model):
 #items related to placed order
 class OrderedItems(models.Model):
     ordereditem = models.ForeignKey(PlacedOrder,on_delete=models.CASCADE, null=True)
-    item_name = models.CharField(max_length=25,blank=True)
+    item = models.ForeignKey(to='menus.MenuItem',on_delete=models.SET_NULL,null=True)
     quantity = models.PositiveIntegerField(null=True)
     total_price = models.DecimalField(default=0.00, max_digits=10, decimal_places=2)
     size = models.CharField(max_length=25,blank=True)
