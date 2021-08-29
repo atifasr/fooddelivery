@@ -149,7 +149,7 @@
 				{% if item.is_added %}
 				<a href="#" class="btn btn-block btn-success">Added ! </a>
 				{% else %}
-				<a href="#" class="btn btn-block btn-primary">Add to cart </a>
+				<a href="{% url 'orders:add_cart' item.id %}" class="btn btn-block btn-primary">Add to cart </a>
 				{% endif %}
 			</figcaption>
 		</figure>

@@ -71,7 +71,7 @@
 </div> <!-- card-body.// -->
 </article> <!-- card.// -->
 
-<button class="new_button">test</button>
+
 
 <article class="accordion" id="accordion_pay">
 	<div class="card">
@@ -174,17 +174,17 @@
 <script>
 	var options = {
 		"key": "rzp_test_IJTmQFDB2f2XCO", // Enter the Key ID generated from the Dashboard
-		"amount": parseInt("{{request.session.order.cart_total}}")*100, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+		"amount": parseInt("{{request.session.order.cart_total}}") * 100, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
 		"currency": "INR",
 		"name": "Acme Corp",
 		"description": "Test Transaction",
 		"image": "https://example.com/your_logo",
-		"order_id": "", //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
-		"callback_url": "https://eneqd3r9zrjok.x.pipedream.net/",
+		"order_id": "{{razor_pay_id}}", //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+		"callback_url": "{{call_back_url}}",
 		"prefill": {
-			"name": "Gaurav Kumar",
-			"email": "gaurav.kumar@example.com",
-			"contact": "9999999999"
+			"name": "{{request.session.user.first_name}}",
+			"email": "{{request.session.order.contact_info.email}}",
+			"contact": "{{request.session.order.contact_info.mob_no}}"
 		},
 		"notes": {
 						"address": "Razorpay Corporate Office"

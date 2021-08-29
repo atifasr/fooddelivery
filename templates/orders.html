@@ -3,23 +3,39 @@
 	{% block content %}
     <div class="col-md-6">
     <div class="order_details">
-        <h2 class="display-5">Orders placed</h2>
-        <table class="table">
+
+      {% if messages %}
+	
+      <div class="alert alert-success  alert-dismissible fade show" role="alert">
+        {% for message in messages %}
+          <strong>{{ message }}</strong>
+        {% endfor %}
+      </div>
+        {% endif %}
+        <h2 class="display-5">Orders</h2>
+        <table class="table table-hover">
             <thead>
+              {% for order in orders  %}
               <tr>
-                <th scope="col">Order details</th>
-            </thead>
+                <th scope="col">Order details order-id : <b>{{order.order_id}}</b></th>
+                <th scope="col"><b>{{order.order_time}}</b></th>
+              </tr>
+              </thead>
             <tbody>
+             
+
+              {% for item in order.ordereditems_set.all %}
               <tr>
-                <td>Mark</td>
+                <a href="{% url 'menus:item' item.item.id %}">
+                  <td>{{item}}</td>
+                </a>
               </tr>
-              <tr>
-                <td>Jacob</td>
-              </tr>
-              <tr>
-                <td>Larry</td>
-              </tr>
+              {% endfor %}
+             
+
+              
             </tbody>
+            {% endfor %}
           </table>
     </div>
 </div>

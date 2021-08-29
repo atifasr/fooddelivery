@@ -3,7 +3,7 @@ from .models import *
 # Register your models here.
 
 class PlacedOrderAdmin(admin.ModelAdmin):
-    list_display = ['customer','restraunt','order_time','estimated_delivery_time']
+    list_display = ['order_id','customer','order_time','estimated_delivery_time','is_confirmed','razor_pay_order_id','city','zip_code','email','mob_no','total_price']
 
 
 class CartItemAdmin(admin.ModelAdmin):
@@ -12,6 +12,9 @@ class CartItemAdmin(admin.ModelAdmin):
     
 class CartAdmin(admin.ModelAdmin):
     list_display=('user','count','total')
+    
+class OrderedItemsAdmin(admin.ModelAdmin):
+    list_display=('ordereditem','item','quantity','total_price','size')
 
 
 
@@ -22,3 +25,4 @@ admin.site.register(Comment)
 admin.site.register(Status)
 admin.site.register(Cart,CartAdmin)
 admin.site.register(CartItem,CartItemAdmin)
+admin.site.register(OrderedItems,OrderedItemsAdmin)
