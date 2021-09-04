@@ -161,7 +161,7 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     BASE_DIR / 'static',
     BASE_DIR / 'menus' / 'static',
-    BASE_DIR / 'orders' / 'static',
+    # BASE_DIR / 'orders' / 'static',
 ]
 
 # Default primary key field type
