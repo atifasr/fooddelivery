@@ -1,3 +1,4 @@
+from django.core import paginator
 from orders.models import CartItem
 from customers.models import Customers
 from django.shortcuts import redirect, render
@@ -15,6 +16,7 @@ from customers.models import Customers
 from restaurants.models import Restaurants
 from menus.models import Category
 from django.http import JsonResponse
+from django.core.paginator import Paginator
 # Create your views here.
 
 #home page 
@@ -47,13 +49,13 @@ def menus(request):
         print(request.META.get('HTTP_REFERER'))
         return render(request, 'base/index.html', context)
 
-
+from .helpers import get_menu_list
 
 def products(request):
     if request.method == 'GET':
         query = request.GET.get('category')
         size = request.GET.get('size')
-        print(size)
+        # print(size)
         user=Customers.objects.get(user=request.user)
         try:
             cartitem = list(CartItem.objects.filter(cart__user=user).values_list('menu_item__id',flat=True))
@@ -61,31 +63,35 @@ def products(request):
             pass
       
         if query:
-            menu_items = MenuItem.objects.filter(category__name=query).order_by('-date_added')
+            menus = MenuItem.objects.filter(category__name=query).order_by('-date_added')
+            # helper function for marking added to cart 
+            menu_items = get_menu_list(menus,cartitem)
             if size:
                 menu_items = menu_items.filter(size=size)
         else:
-            menus_added = {}
-            menu_items =[]
+
             menus = MenuItem.objects.all().order_by('-date_added')
-            for item in menus:
-                menus_added['id'] = item.id
-                menus_added['item_name'] = item.item_name
-                menus_added['price'] = item.price
-                menus_added['image_url'] = item.image_url
-                if item.id in cartitem:
-                   
-                    menus_added['is_added']=True
-                else:
-                    menus_added['is_added']=False
-                menu_items.append(menus_added)
-                menus_added = {}
+            # helper function for marking added to cart 
+            menu_items = get_menu_list(menus,cartitem)
+        
+        paginate = Paginator(menu_items,9)
+        page_objlist= page_num = None
+        if request.GET.get('page'):
+            page_num = request.GET.get('page')
+            page_objlist = paginate.get_page(page_num)
+        else:
+            page_objlist = paginate.get_page(1)
+
+        # print(len(page_objlist.object_list))
+        
+
         restaurants = Restaurants.objects.all()
         categories= Category.objects.all()
         return render(request,'store/store.html',context={
-        'product':menu_items,
+        'product':page_objlist,
         'restaurants':restaurants,
-        'categories':categories
+        'categories':categories,
+        'pages':paginate
     })
 
 
