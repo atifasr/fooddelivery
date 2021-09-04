@@ -34,7 +34,13 @@ def menus(request):
                 print(f'cart for {request.user} is empty')
                 print(e)
         request.session['categories'] = categories
-        request.session['total_count'] = total_count
+        if request.user.is_authenticated:
+            request.session['total_count'] = total_count
+        else:
+            from orders.helpers import cartItems
+            _,_,total_count = cartItems(request)
+            request.session['total_count'] = total_count
+
         context = {
             'menu_list': menu_list,
         }

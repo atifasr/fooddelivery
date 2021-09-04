@@ -22,13 +22,14 @@
 		</div> <!-- col.// -->
 		{% endfor %}
 		{% else %}
-
 		{% for item in cartitems %}
+		
 		<div class="col-md-6">
 			<figure class="itemside  mb-4">
-				<div class="aside"><img src="{{item.menu_item.image.url}}" class="border img-sm"></div>
+				<div class="aside"><img src="" class="border img-sm"></div>
 				<figcaption class="info">
 					<p>{{item.name}}</p>
+					<p>Price : {{item.price}}</p>
 					<span class="text-muted">{{item.quantity}}x = ₹{{item.total_price}} </span>
 				</figcaption>
 			</figure>

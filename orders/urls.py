@@ -12,5 +12,6 @@ urlpatterns = [
     path('remove_item/<item_id>',remove_item,name='remove_item'),
     path('checkout/',checkout,name='checkout'),
     path('orders_placed/',orders_placed,name='orders_placed'),
+    path('checkout_unregis/',checkout_unregis,name='checkout_unregis'),
 
 ]       

@@ -1,5 +1,6 @@
 from django.core.checks.messages import INFO
 from django.core.exceptions import AppRegistryNotReady, ObjectDoesNotExist
+from django.http.response import HttpResponse
 from customers.models import Customers
 from django.contrib import messages
 from .models import Cart,CartItem, OrderedItems,PlacedOrder
@@ -110,9 +111,9 @@ def view_cart(request):
                 total_amount = 0
                 total_value = 0
         else:
-            
-            cartitem=cartItems(request)      
-
+            cartitem,total_value,_=cartItems(request)      
+            total_amount = total_value
+            print(total_value)
             print(cartitem)      
        
         return render(request,'cart/cart.html',{
@@ -214,11 +215,29 @@ def place_order(request):
             return redirect('/checkout')
          
     else:
-        cartitems = cartItems(request)        
-            # return render(request,'checkout.html',{
-            #     'ordered_item':ordered_item
-            # })
+        cartitems,_,_ = cartItems(request)   
+        print(cartitems)
+        if request.method == 'POST':
 
+            
+
+            #storing contact details
+            contact={}
+            contact["first_name"] = request.POST.get('first_name')
+            contact["last_name"] = request.POST.get('last_name')
+            contact["mob_no"] = request.POST.get('mob_no')
+            contact["email"] = request.POST.get('email')
+           
+
+            #storing delivery details
+            delivery_info ={}
+            delivery_info["city"] = request.POST.get('state')
+            delivery_info["building"] = request.POST.get('building')
+            delivery_info["zip_code"] = request.POST.get('zip_code')
+            delivery_info["postal_code"] = request.POST.get('postal_code')
+            delivery_info["street"] = request.POST.get('street')
+
+            return redirect('/checkout_unregis/')
 
     return render(request,'place-order.html',{
                 'cartitems':cartitems,
@@ -285,11 +304,13 @@ def checkout(request):
             
 
             # associated_items = OrderedItems()
+            #dictionay user for signature verification
             params_dict = {
                 'razorpay_order_id': razor_order_id,
                 'razorpay_payment_id': razor_payment_id,
                 'razorpay_signature': payment_signature
             }
+
             cart_items = request.session['order']['order_details']
             print(cart_items)
         
@@ -307,6 +328,7 @@ def checkout(request):
                         inOrder = OrderedItems(ordereditem=placedorder,item=menu,item_name=item['item_name'],quantity=item['quantity'],total_price=item['total_price'],size=item['size'])
                         item_list.append(inOrder)
                     OrderedItems.objects.bulk_create(item_list)
+
                     #Cart cleared after payment
                     Cart.objects.filter(user=customer ).delete()
                     messages.add_message(request, messages.INFO, f'Congo your order for {order_id} order has been Placed!')
@@ -316,6 +338,20 @@ def checkout(request):
     
     
         return render(request,'checkout.html',context)
+
+
+# payment for unregitered users they will be simply given the tracking id after they place the order , no order details will be save in database
+def checkout_unregis(request):
+    return HttpResponse('payments for unregistered')
+
+
+
+
+
+
+
+
+
 
 
 

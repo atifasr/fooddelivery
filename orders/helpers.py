@@ -6,13 +6,15 @@ import json
 def cartItems(request):
     data = request.COOKIES.get('cartitem')
     data =json.loads(data)
-
+    print(data)
     cartitem = []
     for val in data:
         data[val]['id']=val
-        print(data[val])
+        # print(data[val])
     
-    #creating dummmy representation
+    #creating dummmy representation of cart items
+    total_value = 0
+    total_quantity = 0
     for item in data:
         cart_item = {
             'id':data[item]['id'],
@@ -21,5 +23,7 @@ def cartItems(request):
             'quantity':data[item]['quantity'],
             'price':data[item]['single_price'],
         }
+        total_value += data[item]['price']
+        total_quantity += data[item]['quantity']
         cartitem.append(cart_item)       
-    return cartitem
+    return cartitem,total_value,total_quantity

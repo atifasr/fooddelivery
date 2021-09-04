@@ -19,6 +19,15 @@
               <tr>
                 <th scope="col">Order details order-id : <b>{{order.order_id}}</b></th>
                 <th scope="col"><b>{{order.order_time}}</b></th>
+                <th>
+                  <p>status :  
+                    {% if order.is_delivered %}
+                      Delivered 
+                    {% else %}
+                      not delivered 
+                    {% endif %} 
+                  </p>
+                </th>
               </tr>
               </thead>
             <tbody>
@@ -31,8 +40,6 @@
                 </a>
               </tr>
               {% endfor %}
-             
-
               
             </tbody>
             {% endfor %}

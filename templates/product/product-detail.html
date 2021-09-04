@@ -50,7 +50,7 @@
 	</div> <!-- row.// -->
 	<hr>
 
-	<a href="{% url 'orders:add_cart' menu.id %}" data-name='{{menu.item_name}}' data-price='{{menu.price}}' data-menu='{{menu.id}}' data-action='add' class="btn  btn-primary add-button"> <span class="text">Add to cart</span> <i class="fas fa-shopping-cart"></i>  </a>
+	<a href="{% url 'orders:add_cart' menu.id %}" data-image='{{menu.image.url}}' data-name='{{menu.item_name}}' data-price='{{menu.price}}' data-menu='{{menu.id}}' data-action='add' class="btn  btn-primary add-button"> <span class="text">Add to cart</span> <i class="fas fa-shopping-cart"></i>  </a>
 	
 </article> <!-- product-info-aside .// -->
 		</main> <!-- col.// -->
@@ -101,7 +101,7 @@
 var user = '{{request.user}}'
 var add_button = document.querySelector('.add-button');
 var menu_price  = '{{menu.price}}';
-
+console.log('{{menu.image.url}}')
 </script>
 
 <script src="{% static 'orders/cart_function.js' %}">

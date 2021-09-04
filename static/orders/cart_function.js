@@ -1,7 +1,7 @@
 
 // var menu_id  = add_button.getAttribute('data-menu');
 
-
+// fucntion to read cookies 
 function readCookie(name) {
     var nameEQ = name + "=";
     var ca = document.cookie.split(';');
@@ -14,6 +14,7 @@ function readCookie(name) {
 }
 
 CartItem = readCookie('cartitem')
+// parsing cookies to native js objects
 CartItem=JSON.parse(CartItem)
 console.log(CartItem)
 
@@ -36,6 +37,7 @@ for (let i =0; i< buttonCount;i++)
 		console.log('added')
 		console.log(this.getAttribute('data-name'));
 		console.log(this.getAttribute('data-price'));
+		console.log(this.getAttribute('data-image'));
 		console.log(menu_id)
 
 		if (user == 'AnonymousUser'){
@@ -51,7 +53,8 @@ for (let i =0; i< buttonCount;i++)
 						name : this.getAttribute('data-name'),
 						quantity : 1 ,
 						price: parseFloat(this.getAttribute('data-price')),
-						single_price : parseFloat(this.getAttribute('data-price'))
+						single_price : parseFloat(this.getAttribute('data-price')),
+						image : parseFloat(this.getAttribute('data-image'))
 					}	
 				}
 				else{
