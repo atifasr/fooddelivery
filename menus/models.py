@@ -35,7 +35,7 @@ class MenuItem(models.Model):
     image = models.ImageField(upload_to='menu_items')
     date_added =models.DateTimeField(auto_now_add=True)
     restruant = models.ManyToManyField(to='restaurants.Restaurants',blank=True)
-    offer = models.ManyToManyField(to='menus.Offer')
+    offer = models.ManyToManyField(to='menus.Offer',blank=True)
     # is_added= models.BooleanField(default=False)
     
     def __str__(self):

@@ -28,7 +28,7 @@ SECRET_KEY = key
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['immense-anchorage-56196.herokuapp.com','127.0.0.1']
 # time formats
 TIME_INPUT_FORMATS = ['%I:%M %p']
 
@@ -61,6 +61,7 @@ DBBACKUP_STORAGE_OPTIONS = {'location': BASE_DIR / 'backup'}
 # middleware stack
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -151,6 +152,9 @@ USE_TZ = True
 
 
 # STATIC_DIR = BASE_DIR / 'static'
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
 STATIC_URL = '/static/'
 
 
