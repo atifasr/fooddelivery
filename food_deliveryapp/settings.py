@@ -13,7 +13,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 from pathlib import Path
 import os
 import environ
-from .secret import key
+# from .secret import key
 
 env = environ.Env()
 environ.Env.read_env()
