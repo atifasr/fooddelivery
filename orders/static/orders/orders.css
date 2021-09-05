@@ -1,0 +1,36 @@
+*{
+    box-sizing: border-box;
+}
+
+table{
+    padding:5%;
+    background-color: rgb(225, 235, 225)!important;
+    border-radius:5%;
+}
+
+
+thead th {
+    text-align: left;
+}
+
+.order_head{
+    background-color: rgb(221, 189, 129);
+   
+   
+}
+
+.detail_row{
+   padding: 2%; 
+}
+
+.detail_row a{
+    text-decoration: none;
+    color: black;
+}
+
+
+.order_total{
+    color: cadetblue;
+    font-size: 110%;
+    font-weight: bolder;
+}

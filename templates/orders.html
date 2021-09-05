@@ -1,7 +1,13 @@
 {% extends "base/index.html"%}
 {% load static %}
+
+{% block css %}
+  <link rel="stylesheet" href="{% static 'orders/orders.css' %}">
+{% endblock %}
+
+
 	{% block content %}
-    <div class="col-md-6">
+    <div class="col-md-10">
     <div class="order_details">
 
       {% if messages %}
@@ -13,14 +19,25 @@
       </div>
         {% endif %}
         <h2 class="display-5">Orders</h2>
-        <table class="table table-hover">
+        <table class="table">
             <thead>
-              {% for order in orders  %}
               <tr>
-                <th scope="col">Order details order-id : <b>{{order.order_id}}</b></th>
+                <th scope="col">Order details order-id  </th>
+                <th scope="col">Time  </th>
+                <th scope="col">Status </th>
+                
+              </tr>
+              {% for order in orders  %}
+             
+             
+              </thead>
+            <tbody class="t_body">
+              
+              <tr class="order_head">
+                <th scope="col"> <b>{{order.order_id}}</b></th>
                 <th scope="col"><b>{{order.order_time}}</b></th>
                 <th>
-                  <p>status :  
+                  <p>
                     {% if order.is_delivered %}
                       Delivered 
                     {% else %}
@@ -29,17 +46,31 @@
                   </p>
                 </th>
               </tr>
-              </thead>
-            <tbody>
-             
 
               {% for item in order.ordereditems_set.all %}
-              <tr>
-                <a href="{% url 'menus:item' item.item.id %}">
-                  <td>{{item}}</td>
-                </a>
+              <tr class="detail_row">
+                <td>
+                  <a href="{% url 'menus:item' item.item.id %}">
+                    {{item}} 
+                  </a> 
+                </td>
+                <td>
+                  {% if item.quantity %}
+                  {{item.item.price}}
+                  x{{item.quantity}} items
+                  {% endif %}
+                </td>
+                <td>
+                  {{item.total_price}}
+                </td>
+               
               </tr>
+         
               {% endfor %}
+              <tr>
+                <td class="order_total">Order Total </td>
+                <td colspan="2"><b>{{order.total_price}}</b></td>
+              </tr>
               
             </tbody>
             {% endfor %}

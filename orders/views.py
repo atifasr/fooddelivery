@@ -364,7 +364,6 @@ def orders_placed(request):
             ordered_items = OrderedItems.objects.filter(
                 ordereditem__customer =customer
             )
-            print(ordered_items)
         except ObjectDoesNotExist:
             orders = ordered_items = None
             messages.add_message(request,INFO,'Sorry! no orders yet ')

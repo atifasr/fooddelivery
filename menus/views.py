@@ -22,7 +22,7 @@ from django.core.paginator import Paginator
 #home page 
 def menus(request):
     if request.method == 'GET':
-        menu_list = MenuItem.objects.all().order_by('-date_added')
+        menu_list = MenuItem.objects.all().order_by('-date_added')[:8]
         categories = list(Category.objects.all().values_list('name',flat=True))
         total_count = 0
         
@@ -76,8 +76,8 @@ def products(request):
         
         paginate = Paginator(menu_items,9)
         page_objlist= page_num = None
-        if request.GET.get('page'):
-            page_num = request.GET.get('page')
+        if request.GET.get('page_no'):
+            page_num = request.GET.get('page_no')
             page_objlist = paginate.get_page(page_num)
         else:
             page_objlist = paginate.get_page(1)

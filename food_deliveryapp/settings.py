@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 from pathlib import Path
 import os
 import environ
+import dj_database_url
 # from .secret import key
 
 env = environ.Env()
@@ -163,6 +164,7 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     BASE_DIR / 'static',
     BASE_DIR / 'menus' / 'static',
+    BASE_DIR / 'orders' / 'static',
     # BASE_DIR / 'orders' / 'static',
 ]
 
@@ -192,3 +194,23 @@ EMAIL_USE_TLS = True
 
 RAZOR_KEY= 'rzp_test_IJTmQFDB2f2XCO'
 RAZOR_SEC_KEY = 'p79UdplbOgurzcMJDRqMHxjW'
+
+
+
+
+# DATABASES['default'] = dj_database_url.config()
+
+
+# in_heroku = False
+# if 'DATABASE_URL' in os.environ:
+#     in_heroku = True
+
+# if in_heroku:
+#     DATABASES = {'default': dj_database_url.config()}
+# else:
+#     DATABASES = {
+#         'default': {
+#             'ENGINE': 'django.db.backends.sqlite3',
+#             'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#         }
+#     }
