@@ -201,16 +201,9 @@ RAZOR_SEC_KEY = 'p79UdplbOgurzcMJDRqMHxjW'
 # DATABASES['default'] = dj_database_url.config()
 
 
-# in_heroku = False
-# if 'DATABASE_URL' in os.environ:
-#     in_heroku = True
+in_heroku = False
+if 'DATABASE_URL' in os.environ:
+    in_heroku = True
 
-# if in_heroku:
-#     DATABASES = {'default': dj_database_url.config()}
-# else:
-#     DATABASES = {
-#         'default': {
-#             'ENGINE': 'django.db.backends.sqlite3',
-#             'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-#         }
-#     }
+if in_heroku:
+   DATABASES['default'] = dj_database_url.config()
