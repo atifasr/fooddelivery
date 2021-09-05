@@ -40,9 +40,11 @@ def menus(request):
             request.session['total_count'] = total_count
         else:
             from orders.helpers import cartItems
-            _,_,total_count = cartItems(request)
-            request.session['total_count'] = total_count
-
+            try:
+                _,_,total_count = cartItems(request)
+                request.session['total_count'] = total_count
+            except:
+                total_count = 0
         context = {
             'menu_list': menu_list,
         }
