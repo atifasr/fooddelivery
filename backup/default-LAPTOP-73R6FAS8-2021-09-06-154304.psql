@@ -1,0 +1,2372 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 13.4
+-- Dumped by pg_dump version 13.4
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+ALTER TABLE ONLY public.restaurants_restaurants DROP CONSTRAINT restaurants_restaurants_city_id_36e11db0_fk_restaurants_city_id;
+ALTER TABLE ONLY public.orders_status_order DROP CONSTRAINT orders_status_order_status_id_4cd1b32b_fk_orders_status_id;
+ALTER TABLE ONLY public.orders_status_order DROP CONSTRAINT orders_status_order_placedorder_id_95ab72d7_fk_orders_pl;
+ALTER TABLE ONLY public.orders_placedorder DROP CONSTRAINT orders_placedorder_customer_id_5088a8d0_fk_customers;
+ALTER TABLE ONLY public.orders_ordereditems DROP CONSTRAINT orders_ordereditems_ordereditem_id_7379a9fa_fk_orders_pl;
+ALTER TABLE ONLY public.orders_ordereditems DROP CONSTRAINT orders_ordereditems_item_id_a3a120df_fk_menus_menuitem_id;
+ALTER TABLE ONLY public.orders_comment DROP CONSTRAINT orders_comment_order_id_6f03ba56_fk_orders_placedorder_id;
+ALTER TABLE ONLY public.orders_comment DROP CONSTRAINT orders_comment_customer_id_4309df1c_fk_customers_customers_id;
+ALTER TABLE ONLY public.orders_cartitem DROP CONSTRAINT orders_cartitem_menu_item_id_8bb3e579_fk_menus_menuitem_id;
+ALTER TABLE ONLY public.orders_cartitem DROP CONSTRAINT orders_cartitem_cart_id_529df5fa_fk_orders_cart_id;
+ALTER TABLE ONLY public.orders_cart DROP CONSTRAINT orders_cart_user_id_121a069e_fk_customers_customers_id;
+ALTER TABLE ONLY public.menus_menuitem_restruant DROP CONSTRAINT menus_menuitem_restr_restaurants_id_99c27744_fk_restauran;
+ALTER TABLE ONLY public.menus_menuitem_restruant DROP CONSTRAINT menus_menuitem_restr_menuitem_id_38452ccb_fk_menus_men;
+ALTER TABLE ONLY public.menus_menuitem_offer DROP CONSTRAINT menus_menuitem_offer_offer_id_c2e00be8_fk_menus_offer_id;
+ALTER TABLE ONLY public.menus_menuitem_offer DROP CONSTRAINT menus_menuitem_offer_menuitem_id_a4616030_fk_menus_menuitem_id;
+ALTER TABLE ONLY public.menus_menuitem DROP CONSTRAINT menus_menuitem_category_id_6afa88ab_fk_menus_category_id;
+ALTER TABLE ONLY public.menus_ingredients DROP CONSTRAINT menus_ingredients_item_id_9d9186d9_fk_menus_menuitem_id;
+ALTER TABLE ONLY public.django_admin_log DROP CONSTRAINT django_admin_log_user_id_c564eba6_fk_customers_user_id;
+ALTER TABLE ONLY public.django_admin_log DROP CONSTRAINT django_admin_log_content_type_id_c4bce8eb_fk_django_co;
+ALTER TABLE ONLY public.customers_customers DROP CONSTRAINT customers_customers_user_id_ee51bdaa_fk_customers_user_id;
+ALTER TABLE ONLY public.customers_customers DROP CONSTRAINT customers_customers_city_id_34000c30_fk_restaurants_city_id;
+ALTER TABLE ONLY public.auth_permission DROP CONSTRAINT auth_permission_content_type_id_2f476e4b_fk_django_co;
+ALTER TABLE ONLY public.auth_group_permissions DROP CONSTRAINT auth_group_permissions_group_id_b120cbf9_fk_auth_group_id;
+ALTER TABLE ONLY public.auth_group_permissions DROP CONSTRAINT auth_group_permissio_permission_id_84c5c92e_fk_auth_perm;
+DROP INDEX public.restaurants_restaurants_city_id_36e11db0;
+DROP INDEX public.orders_status_order_status_id_4cd1b32b;
+DROP INDEX public.orders_status_order_placedorder_id_95ab72d7;
+DROP INDEX public.orders_placedorder_customer_id_5088a8d0;
+DROP INDEX public.orders_ordereditems_ordereditem_id_7379a9fa;
+DROP INDEX public.orders_ordereditems_item_id_a3a120df;
+DROP INDEX public.orders_comment_order_id_6f03ba56;
+DROP INDEX public.orders_comment_customer_id_4309df1c;
+DROP INDEX public.orders_cartitem_menu_item_id_8bb3e579;
+DROP INDEX public.orders_cartitem_cart_id_529df5fa;
+DROP INDEX public.orders_cart_user_id_121a069e;
+DROP INDEX public.menus_menuitem_restruant_restaurants_id_99c27744;
+DROP INDEX public.menus_menuitem_restruant_menuitem_id_38452ccb;
+DROP INDEX public.menus_menuitem_offer_offer_id_c2e00be8;
+DROP INDEX public.menus_menuitem_offer_menuitem_id_a4616030;
+DROP INDEX public.menus_menuitem_category_id_6afa88ab;
+DROP INDEX public.menus_ingredients_item_id_9d9186d9;
+DROP INDEX public.menus_category_uri_name_7a6ba75c_like;
+DROP INDEX public.menus_category_uri_name_7a6ba75c;
+DROP INDEX public.django_session_session_key_c0390e0f_like;
+DROP INDEX public.django_session_expire_date_a5c62663;
+DROP INDEX public.django_admin_log_user_id_c564eba6;
+DROP INDEX public.django_admin_log_content_type_id_c4bce8eb;
+DROP INDEX public.customers_user_username_43e992e8_like;
+DROP INDEX public.customers_customers_city_id_34000c30;
+DROP INDEX public.auth_permission_content_type_id_2f476e4b;
+DROP INDEX public.auth_group_permissions_permission_id_84c5c92e;
+DROP INDEX public.auth_group_permissions_group_id_b120cbf9;
+DROP INDEX public.auth_group_name_a6ea08ec_like;
+ALTER TABLE ONLY public.restaurants_restaurants DROP CONSTRAINT restaurants_restaurants_pkey;
+ALTER TABLE ONLY public.restaurants_city DROP CONSTRAINT restaurants_city_pkey;
+ALTER TABLE ONLY public.orders_status DROP CONSTRAINT orders_status_pkey;
+ALTER TABLE ONLY public.orders_status_order DROP CONSTRAINT orders_status_order_status_id_placedorder_id_d9107fbc_uniq;
+ALTER TABLE ONLY public.orders_status_order DROP CONSTRAINT orders_status_order_pkey;
+ALTER TABLE ONLY public.orders_placedorder DROP CONSTRAINT orders_placedorder_pkey;
+ALTER TABLE ONLY public.orders_ordereditems DROP CONSTRAINT orders_ordereditems_pkey;
+ALTER TABLE ONLY public.orders_comment DROP CONSTRAINT orders_comment_pkey;
+ALTER TABLE ONLY public.orders_cartitem DROP CONSTRAINT orders_cartitem_pkey;
+ALTER TABLE ONLY public.orders_cart DROP CONSTRAINT orders_cart_pkey;
+ALTER TABLE ONLY public.menus_offer DROP CONSTRAINT menus_offer_pkey;
+ALTER TABLE ONLY public.menus_menuitem_restruant DROP CONSTRAINT menus_menuitem_restruant_pkey;
+ALTER TABLE ONLY public.menus_menuitem_restruant DROP CONSTRAINT menus_menuitem_restruant_menuitem_id_restaurants__fbf0fb0b_uniq;
+ALTER TABLE ONLY public.menus_menuitem DROP CONSTRAINT menus_menuitem_pkey;
+ALTER TABLE ONLY public.menus_menuitem_offer DROP CONSTRAINT menus_menuitem_offer_pkey;
+ALTER TABLE ONLY public.menus_menuitem_offer DROP CONSTRAINT menus_menuitem_offer_menuitem_id_offer_id_0f6e179d_uniq;
+ALTER TABLE ONLY public.menus_ingredients DROP CONSTRAINT menus_ingredients_pkey;
+ALTER TABLE ONLY public.menus_category DROP CONSTRAINT menus_category_pkey;
+ALTER TABLE ONLY public.django_session DROP CONSTRAINT django_session_pkey;
+ALTER TABLE ONLY public.django_migrations DROP CONSTRAINT django_migrations_pkey;
+ALTER TABLE ONLY public.django_content_type DROP CONSTRAINT django_content_type_pkey;
+ALTER TABLE ONLY public.django_content_type DROP CONSTRAINT django_content_type_app_label_model_76bd3d3b_uniq;
+ALTER TABLE ONLY public.django_admin_log DROP CONSTRAINT django_admin_log_pkey;
+ALTER TABLE ONLY public.customers_user DROP CONSTRAINT customers_user_username_key;
+ALTER TABLE ONLY public.customers_user DROP CONSTRAINT customers_user_pkey;
+ALTER TABLE ONLY public.customers_customers DROP CONSTRAINT customers_customers_user_id_key;
+ALTER TABLE ONLY public.customers_customers DROP CONSTRAINT customers_customers_pkey;
+ALTER TABLE ONLY public.auth_permission DROP CONSTRAINT auth_permission_pkey;
+ALTER TABLE ONLY public.auth_permission DROP CONSTRAINT auth_permission_content_type_id_codename_01ab375a_uniq;
+ALTER TABLE ONLY public.auth_group DROP CONSTRAINT auth_group_pkey;
+ALTER TABLE ONLY public.auth_group_permissions DROP CONSTRAINT auth_group_permissions_pkey;
+ALTER TABLE ONLY public.auth_group_permissions DROP CONSTRAINT auth_group_permissions_group_id_permission_id_0cd325b0_uniq;
+ALTER TABLE ONLY public.auth_group DROP CONSTRAINT auth_group_name_key;
+ALTER TABLE public.restaurants_restaurants ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE public.restaurants_city ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE public.orders_status_order ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE public.orders_status ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE public.orders_placedorder ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE public.orders_ordereditems ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE public.orders_comment ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE public.orders_cartitem ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE public.orders_cart ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE public.menus_offer ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE public.menus_menuitem_restruant ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE public.menus_menuitem_offer ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE public.menus_menuitem ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE public.menus_ingredients ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE public.menus_category ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE public.django_migrations ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE public.django_content_type ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE public.django_admin_log ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE public.customers_user ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE public.customers_customers ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE public.auth_permission ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE public.auth_group_permissions ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE public.auth_group ALTER COLUMN id DROP DEFAULT;
+DROP SEQUENCE public.restaurants_restaurants_id_seq;
+DROP TABLE public.restaurants_restaurants;
+DROP SEQUENCE public.restaurants_city_id_seq;
+DROP TABLE public.restaurants_city;
+DROP SEQUENCE public.orders_status_order_id_seq;
+DROP TABLE public.orders_status_order;
+DROP SEQUENCE public.orders_status_id_seq;
+DROP TABLE public.orders_status;
+DROP SEQUENCE public.orders_placedorder_id_seq;
+DROP TABLE public.orders_placedorder;
+DROP SEQUENCE public.orders_ordereditems_id_seq;
+DROP TABLE public.orders_ordereditems;
+DROP SEQUENCE public.orders_comment_id_seq;
+DROP TABLE public.orders_comment;
+DROP SEQUENCE public.orders_cartitem_id_seq;
+DROP TABLE public.orders_cartitem;
+DROP SEQUENCE public.orders_cart_id_seq;
+DROP TABLE public.orders_cart;
+DROP SEQUENCE public.menus_offer_id_seq;
+DROP TABLE public.menus_offer;
+DROP SEQUENCE public.menus_menuitem_restruant_id_seq;
+DROP TABLE public.menus_menuitem_restruant;
+DROP SEQUENCE public.menus_menuitem_offer_id_seq;
+DROP TABLE public.menus_menuitem_offer;
+DROP SEQUENCE public.menus_menuitem_id_seq;
+DROP TABLE public.menus_menuitem;
+DROP SEQUENCE public.menus_ingredients_id_seq;
+DROP TABLE public.menus_ingredients;
+DROP SEQUENCE public.menus_category_id_seq;
+DROP TABLE public.menus_category;
+DROP TABLE public.django_session;
+DROP SEQUENCE public.django_migrations_id_seq;
+DROP TABLE public.django_migrations;
+DROP SEQUENCE public.django_content_type_id_seq;
+DROP TABLE public.django_content_type;
+DROP SEQUENCE public.django_admin_log_id_seq;
+DROP TABLE public.django_admin_log;
+DROP SEQUENCE public.customers_user_id_seq;
+DROP TABLE public.customers_user;
+DROP SEQUENCE public.customers_customers_id_seq;
+DROP TABLE public.customers_customers;
+DROP SEQUENCE public.auth_permission_id_seq;
+DROP TABLE public.auth_permission;
+DROP SEQUENCE public.auth_group_permissions_id_seq;
+DROP TABLE public.auth_group_permissions;
+DROP SEQUENCE public.auth_group_id_seq;
+DROP TABLE public.auth_group;
+DROP EXTENSION adminpack;
+--
+-- Name: adminpack; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS adminpack WITH SCHEMA pg_catalog;
+
+
+--
+-- Name: EXTENSION adminpack; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION adminpack IS 'administrative functions for PostgreSQL';
+
+
+SET default_tablespace = '';
+
+SET default_table_access_method = heap;
+
+--
+-- Name: auth_group; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.auth_group (
+    id integer NOT NULL,
+    name character varying(150) NOT NULL
+);
+
+
+ALTER TABLE public.auth_group OWNER TO postgres;
+
+--
+-- Name: auth_group_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.auth_group_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.auth_group_id_seq OWNER TO postgres;
+
+--
+-- Name: auth_group_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.auth_group_id_seq OWNED BY public.auth_group.id;
+
+
+--
+-- Name: auth_group_permissions; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.auth_group_permissions (
+    id bigint NOT NULL,
+    group_id integer NOT NULL,
+    permission_id integer NOT NULL
+);
+
+
+ALTER TABLE public.auth_group_permissions OWNER TO postgres;
+
+--
+-- Name: auth_group_permissions_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.auth_group_permissions_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.auth_group_permissions_id_seq OWNER TO postgres;
+
+--
+-- Name: auth_group_permissions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.auth_group_permissions_id_seq OWNED BY public.auth_group_permissions.id;
+
+
+--
+-- Name: auth_permission; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.auth_permission (
+    id integer NOT NULL,
+    name character varying(255) NOT NULL,
+    content_type_id integer NOT NULL,
+    codename character varying(100) NOT NULL
+);
+
+
+ALTER TABLE public.auth_permission OWNER TO postgres;
+
+--
+-- Name: auth_permission_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.auth_permission_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.auth_permission_id_seq OWNER TO postgres;
+
+--
+-- Name: auth_permission_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.auth_permission_id_seq OWNED BY public.auth_permission.id;
+
+
+--
+-- Name: customers_customers; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.customers_customers (
+    id bigint NOT NULL,
+    contact_no character varying(25) NOT NULL,
+    time_joined timestamp with time zone NOT NULL,
+    gender character varying(10) NOT NULL,
+    city_id bigint,
+    user_id bigint NOT NULL
+);
+
+
+ALTER TABLE public.customers_customers OWNER TO postgres;
+
+--
+-- Name: customers_customers_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.customers_customers_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.customers_customers_id_seq OWNER TO postgres;
+
+--
+-- Name: customers_customers_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.customers_customers_id_seq OWNED BY public.customers_customers.id;
+
+
+--
+-- Name: customers_user; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.customers_user (
+    id bigint NOT NULL,
+    password character varying(128) NOT NULL,
+    last_login timestamp with time zone,
+    email character varying(255) NOT NULL,
+    username character varying(25) NOT NULL,
+    first_name character varying(25) NOT NULL,
+    last_name character varying(25) NOT NULL,
+    date_of_birth date NOT NULL,
+    is_active boolean NOT NULL,
+    is_admin boolean NOT NULL
+);
+
+
+ALTER TABLE public.customers_user OWNER TO postgres;
+
+--
+-- Name: customers_user_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.customers_user_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.customers_user_id_seq OWNER TO postgres;
+
+--
+-- Name: customers_user_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.customers_user_id_seq OWNED BY public.customers_user.id;
+
+
+--
+-- Name: django_admin_log; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.django_admin_log (
+    id integer NOT NULL,
+    action_time timestamp with time zone NOT NULL,
+    object_id text,
+    object_repr character varying(200) NOT NULL,
+    action_flag smallint NOT NULL,
+    change_message text NOT NULL,
+    content_type_id integer,
+    user_id bigint NOT NULL,
+    CONSTRAINT django_admin_log_action_flag_check CHECK ((action_flag >= 0))
+);
+
+
+ALTER TABLE public.django_admin_log OWNER TO postgres;
+
+--
+-- Name: django_admin_log_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.django_admin_log_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.django_admin_log_id_seq OWNER TO postgres;
+
+--
+-- Name: django_admin_log_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.django_admin_log_id_seq OWNED BY public.django_admin_log.id;
+
+
+--
+-- Name: django_content_type; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.django_content_type (
+    id integer NOT NULL,
+    app_label character varying(100) NOT NULL,
+    model character varying(100) NOT NULL
+);
+
+
+ALTER TABLE public.django_content_type OWNER TO postgres;
+
+--
+-- Name: django_content_type_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.django_content_type_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.django_content_type_id_seq OWNER TO postgres;
+
+--
+-- Name: django_content_type_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.django_content_type_id_seq OWNED BY public.django_content_type.id;
+
+
+--
+-- Name: django_migrations; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.django_migrations (
+    id bigint NOT NULL,
+    app character varying(255) NOT NULL,
+    name character varying(255) NOT NULL,
+    applied timestamp with time zone NOT NULL
+);
+
+
+ALTER TABLE public.django_migrations OWNER TO postgres;
+
+--
+-- Name: django_migrations_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.django_migrations_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.django_migrations_id_seq OWNER TO postgres;
+
+--
+-- Name: django_migrations_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.django_migrations_id_seq OWNED BY public.django_migrations.id;
+
+
+--
+-- Name: django_session; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.django_session (
+    session_key character varying(40) NOT NULL,
+    session_data text NOT NULL,
+    expire_date timestamp with time zone NOT NULL
+);
+
+
+ALTER TABLE public.django_session OWNER TO postgres;
+
+--
+-- Name: menus_category; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.menus_category (
+    id bigint NOT NULL,
+    name character varying(25) NOT NULL,
+    uri_name character varying(25) NOT NULL,
+    description text NOT NULL,
+    image character varying(100) NOT NULL
+);
+
+
+ALTER TABLE public.menus_category OWNER TO postgres;
+
+--
+-- Name: menus_category_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.menus_category_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.menus_category_id_seq OWNER TO postgres;
+
+--
+-- Name: menus_category_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.menus_category_id_seq OWNED BY public.menus_category.id;
+
+
+--
+-- Name: menus_ingredients; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.menus_ingredients (
+    id bigint NOT NULL,
+    name character varying(25) NOT NULL,
+    item_id bigint NOT NULL
+);
+
+
+ALTER TABLE public.menus_ingredients OWNER TO postgres;
+
+--
+-- Name: menus_ingredients_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.menus_ingredients_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.menus_ingredients_id_seq OWNER TO postgres;
+
+--
+-- Name: menus_ingredients_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.menus_ingredients_id_seq OWNED BY public.menus_ingredients.id;
+
+
+--
+-- Name: menus_menuitem; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.menus_menuitem (
+    id bigint NOT NULL,
+    item_name character varying(255) NOT NULL,
+    description text NOT NULL,
+    recipe text NOT NULL,
+    is_veg boolean NOT NULL,
+    price numeric(8,2) NOT NULL,
+    is_available boolean NOT NULL,
+    image character varying(100) NOT NULL,
+    date_added timestamp with time zone NOT NULL,
+    category_id bigint NOT NULL
+);
+
+
+ALTER TABLE public.menus_menuitem OWNER TO postgres;
+
+--
+-- Name: menus_menuitem_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.menus_menuitem_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.menus_menuitem_id_seq OWNER TO postgres;
+
+--
+-- Name: menus_menuitem_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.menus_menuitem_id_seq OWNED BY public.menus_menuitem.id;
+
+
+--
+-- Name: menus_menuitem_offer; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.menus_menuitem_offer (
+    id bigint NOT NULL,
+    menuitem_id bigint NOT NULL,
+    offer_id bigint NOT NULL
+);
+
+
+ALTER TABLE public.menus_menuitem_offer OWNER TO postgres;
+
+--
+-- Name: menus_menuitem_offer_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.menus_menuitem_offer_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.menus_menuitem_offer_id_seq OWNER TO postgres;
+
+--
+-- Name: menus_menuitem_offer_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.menus_menuitem_offer_id_seq OWNED BY public.menus_menuitem_offer.id;
+
+
+--
+-- Name: menus_menuitem_restruant; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.menus_menuitem_restruant (
+    id bigint NOT NULL,
+    menuitem_id bigint NOT NULL,
+    restaurants_id bigint NOT NULL
+);
+
+
+ALTER TABLE public.menus_menuitem_restruant OWNER TO postgres;
+
+--
+-- Name: menus_menuitem_restruant_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.menus_menuitem_restruant_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.menus_menuitem_restruant_id_seq OWNER TO postgres;
+
+--
+-- Name: menus_menuitem_restruant_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.menus_menuitem_restruant_id_seq OWNED BY public.menus_menuitem_restruant.id;
+
+
+--
+-- Name: menus_offer; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.menus_offer (
+    id bigint NOT NULL,
+    name character varying(50) NOT NULL,
+    discount numeric(4,2) NOT NULL,
+    date_from date NOT NULL,
+    time_from time without time zone NOT NULL,
+    date_to date NOT NULL,
+    time_to time without time zone NOT NULL
+);
+
+
+ALTER TABLE public.menus_offer OWNER TO postgres;
+
+--
+-- Name: menus_offer_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.menus_offer_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.menus_offer_id_seq OWNER TO postgres;
+
+--
+-- Name: menus_offer_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.menus_offer_id_seq OWNED BY public.menus_offer.id;
+
+
+--
+-- Name: orders_cart; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.orders_cart (
+    id bigint NOT NULL,
+    count integer NOT NULL,
+    total numeric(10,2) NOT NULL,
+    updated timestamp with time zone NOT NULL,
+    "timestamp" timestamp with time zone NOT NULL,
+    user_id bigint,
+    CONSTRAINT orders_cart_count_check CHECK ((count >= 0))
+);
+
+
+ALTER TABLE public.orders_cart OWNER TO postgres;
+
+--
+-- Name: orders_cart_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.orders_cart_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.orders_cart_id_seq OWNER TO postgres;
+
+--
+-- Name: orders_cart_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.orders_cart_id_seq OWNED BY public.orders_cart.id;
+
+
+--
+-- Name: orders_cartitem; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.orders_cartitem (
+    id bigint NOT NULL,
+    quantity integer,
+    total_price numeric(10,2) NOT NULL,
+    size character varying(25) NOT NULL,
+    cart_id bigint,
+    menu_item_id bigint,
+    CONSTRAINT orders_cartitem_quantity_check CHECK ((quantity >= 0))
+);
+
+
+ALTER TABLE public.orders_cartitem OWNER TO postgres;
+
+--
+-- Name: orders_cartitem_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.orders_cartitem_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.orders_cartitem_id_seq OWNER TO postgres;
+
+--
+-- Name: orders_cartitem_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.orders_cartitem_id_seq OWNED BY public.orders_cartitem.id;
+
+
+--
+-- Name: orders_comment; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.orders_comment (
+    id bigint NOT NULL,
+    text text NOT NULL,
+    created timestamp with time zone NOT NULL,
+    is_req boolean NOT NULL,
+    is_complaint boolean NOT NULL,
+    customer_id bigint NOT NULL,
+    order_id bigint NOT NULL
+);
+
+
+ALTER TABLE public.orders_comment OWNER TO postgres;
+
+--
+-- Name: orders_comment_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.orders_comment_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.orders_comment_id_seq OWNER TO postgres;
+
+--
+-- Name: orders_comment_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.orders_comment_id_seq OWNED BY public.orders_comment.id;
+
+
+--
+-- Name: orders_ordereditems; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.orders_ordereditems (
+    id bigint NOT NULL,
+    item_name character varying(255) NOT NULL,
+    quantity integer,
+    total_price numeric(10,2) NOT NULL,
+    size character varying(25) NOT NULL,
+    item_id bigint,
+    ordereditem_id bigint,
+    CONSTRAINT orders_ordereditems_quantity_check CHECK ((quantity >= 0))
+);
+
+
+ALTER TABLE public.orders_ordereditems OWNER TO postgres;
+
+--
+-- Name: orders_ordereditems_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.orders_ordereditems_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.orders_ordereditems_id_seq OWNER TO postgres;
+
+--
+-- Name: orders_ordereditems_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.orders_ordereditems_id_seq OWNED BY public.orders_ordereditems.id;
+
+
+--
+-- Name: orders_placedorder; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.orders_placedorder (
+    id bigint NOT NULL,
+    order_id character varying(255) NOT NULL,
+    order_time timestamp with time zone NOT NULL,
+    estimated_delivery_time time without time zone,
+    actual_delivery_time time without time zone,
+    total_price numeric(12,2) NOT NULL,
+    is_delivered boolean NOT NULL,
+    is_confirmed boolean,
+    city character varying(25) NOT NULL,
+    building character varying(25) NOT NULL,
+    zip_code character varying(25) NOT NULL,
+    razor_pay_order_id character varying(255),
+    razor_pay_payment_id character varying(255),
+    razor_pay_signature character varying(255),
+    email character varying(25) NOT NULL,
+    mob_no character varying(20),
+    customer_id bigint NOT NULL
+);
+
+
+ALTER TABLE public.orders_placedorder OWNER TO postgres;
+
+--
+-- Name: orders_placedorder_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.orders_placedorder_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.orders_placedorder_id_seq OWNER TO postgres;
+
+--
+-- Name: orders_placedorder_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.orders_placedorder_id_seq OWNED BY public.orders_placedorder.id;
+
+
+--
+-- Name: orders_status; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.orders_status (
+    id bigint NOT NULL,
+    status character varying(25) NOT NULL,
+    "time" time without time zone NOT NULL
+);
+
+
+ALTER TABLE public.orders_status OWNER TO postgres;
+
+--
+-- Name: orders_status_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.orders_status_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.orders_status_id_seq OWNER TO postgres;
+
+--
+-- Name: orders_status_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.orders_status_id_seq OWNED BY public.orders_status.id;
+
+
+--
+-- Name: orders_status_order; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.orders_status_order (
+    id bigint NOT NULL,
+    status_id bigint NOT NULL,
+    placedorder_id bigint NOT NULL
+);
+
+
+ALTER TABLE public.orders_status_order OWNER TO postgres;
+
+--
+-- Name: orders_status_order_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.orders_status_order_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.orders_status_order_id_seq OWNER TO postgres;
+
+--
+-- Name: orders_status_order_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.orders_status_order_id_seq OWNED BY public.orders_status_order.id;
+
+
+--
+-- Name: restaurants_city; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.restaurants_city (
+    id bigint NOT NULL,
+    city_name character varying(30) NOT NULL,
+    zip_code integer NOT NULL
+);
+
+
+ALTER TABLE public.restaurants_city OWNER TO postgres;
+
+--
+-- Name: restaurants_city_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.restaurants_city_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.restaurants_city_id_seq OWNER TO postgres;
+
+--
+-- Name: restaurants_city_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.restaurants_city_id_seq OWNED BY public.restaurants_city.id;
+
+
+--
+-- Name: restaurants_restaurants; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.restaurants_restaurants (
+    id bigint NOT NULL,
+    name character varying(50) NOT NULL,
+    address character varying(50) NOT NULL,
+    mob_no character varying(10) NOT NULL,
+    opening_time time without time zone NOT NULL,
+    closing_time time without time zone NOT NULL,
+    website character varying(200) NOT NULL,
+    cover character varying(100) NOT NULL,
+    city_id bigint NOT NULL
+);
+
+
+ALTER TABLE public.restaurants_restaurants OWNER TO postgres;
+
+--
+-- Name: restaurants_restaurants_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.restaurants_restaurants_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.restaurants_restaurants_id_seq OWNER TO postgres;
+
+--
+-- Name: restaurants_restaurants_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.restaurants_restaurants_id_seq OWNED BY public.restaurants_restaurants.id;
+
+
+--
+-- Name: auth_group id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.auth_group ALTER COLUMN id SET DEFAULT nextval('public.auth_group_id_seq'::regclass);
+
+
+--
+-- Name: auth_group_permissions id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.auth_group_permissions ALTER COLUMN id SET DEFAULT nextval('public.auth_group_permissions_id_seq'::regclass);
+
+
+--
+-- Name: auth_permission id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.auth_permission ALTER COLUMN id SET DEFAULT nextval('public.auth_permission_id_seq'::regclass);
+
+
+--
+-- Name: customers_customers id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.customers_customers ALTER COLUMN id SET DEFAULT nextval('public.customers_customers_id_seq'::regclass);
+
+
+--
+-- Name: customers_user id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.customers_user ALTER COLUMN id SET DEFAULT nextval('public.customers_user_id_seq'::regclass);
+
+
+--
+-- Name: django_admin_log id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.django_admin_log ALTER COLUMN id SET DEFAULT nextval('public.django_admin_log_id_seq'::regclass);
+
+
+--
+-- Name: django_content_type id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.django_content_type ALTER COLUMN id SET DEFAULT nextval('public.django_content_type_id_seq'::regclass);
+
+
+--
+-- Name: django_migrations id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.django_migrations ALTER COLUMN id SET DEFAULT nextval('public.django_migrations_id_seq'::regclass);
+
+
+--
+-- Name: menus_category id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.menus_category ALTER COLUMN id SET DEFAULT nextval('public.menus_category_id_seq'::regclass);
+
+
+--
+-- Name: menus_ingredients id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.menus_ingredients ALTER COLUMN id SET DEFAULT nextval('public.menus_ingredients_id_seq'::regclass);
+
+
+--
+-- Name: menus_menuitem id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.menus_menuitem ALTER COLUMN id SET DEFAULT nextval('public.menus_menuitem_id_seq'::regclass);
+
+
+--
+-- Name: menus_menuitem_offer id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.menus_menuitem_offer ALTER COLUMN id SET DEFAULT nextval('public.menus_menuitem_offer_id_seq'::regclass);
+
+
+--
+-- Name: menus_menuitem_restruant id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.menus_menuitem_restruant ALTER COLUMN id SET DEFAULT nextval('public.menus_menuitem_restruant_id_seq'::regclass);
+
+
+--
+-- Name: menus_offer id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.menus_offer ALTER COLUMN id SET DEFAULT nextval('public.menus_offer_id_seq'::regclass);
+
+
+--
+-- Name: orders_cart id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.orders_cart ALTER COLUMN id SET DEFAULT nextval('public.orders_cart_id_seq'::regclass);
+
+
+--
+-- Name: orders_cartitem id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.orders_cartitem ALTER COLUMN id SET DEFAULT nextval('public.orders_cartitem_id_seq'::regclass);
+
+
+--
+-- Name: orders_comment id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.orders_comment ALTER COLUMN id SET DEFAULT nextval('public.orders_comment_id_seq'::regclass);
+
+
+--
+-- Name: orders_ordereditems id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.orders_ordereditems ALTER COLUMN id SET DEFAULT nextval('public.orders_ordereditems_id_seq'::regclass);
+
+
+--
+-- Name: orders_placedorder id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.orders_placedorder ALTER COLUMN id SET DEFAULT nextval('public.orders_placedorder_id_seq'::regclass);
+
+
+--
+-- Name: orders_status id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.orders_status ALTER COLUMN id SET DEFAULT nextval('public.orders_status_id_seq'::regclass);
+
+
+--
+-- Name: orders_status_order id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.orders_status_order ALTER COLUMN id SET DEFAULT nextval('public.orders_status_order_id_seq'::regclass);
+
+
+--
+-- Name: restaurants_city id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.restaurants_city ALTER COLUMN id SET DEFAULT nextval('public.restaurants_city_id_seq'::regclass);
+
+
+--
+-- Name: restaurants_restaurants id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.restaurants_restaurants ALTER COLUMN id SET DEFAULT nextval('public.restaurants_restaurants_id_seq'::regclass);
+
+
+--
+-- Data for Name: auth_group; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.auth_group (id, name) FROM stdin;
+\.
+
+
+--
+-- Data for Name: auth_group_permissions; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.auth_group_permissions (id, group_id, permission_id) FROM stdin;
+\.
+
+
+--
+-- Data for Name: auth_permission; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.auth_permission (id, name, content_type_id, codename) FROM stdin;
+1	Can add category	1	add_category
+2	Can change category	1	change_category
+3	Can delete category	1	delete_category
+4	Can view category	1	view_category
+5	Can add offer	2	add_offer
+6	Can change offer	2	change_offer
+7	Can delete offer	2	delete_offer
+8	Can view offer	2	view_offer
+9	Can add menu item	3	add_menuitem
+10	Can change menu item	3	change_menuitem
+11	Can delete menu item	3	delete_menuitem
+12	Can view menu item	3	view_menuitem
+13	Can add ingredients	4	add_ingredients
+14	Can change ingredients	4	change_ingredients
+15	Can delete ingredients	4	delete_ingredients
+16	Can view ingredients	4	view_ingredients
+17	Can add cart	5	add_cart
+18	Can change cart	5	change_cart
+19	Can delete cart	5	delete_cart
+20	Can view cart	5	view_cart
+21	Can add placed order	6	add_placedorder
+22	Can change placed order	6	change_placedorder
+23	Can delete placed order	6	delete_placedorder
+24	Can view placed order	6	view_placedorder
+25	Can add status	7	add_status
+26	Can change status	7	change_status
+27	Can delete status	7	delete_status
+28	Can view status	7	view_status
+29	Can add ordered items	8	add_ordereditems
+30	Can change ordered items	8	change_ordereditems
+31	Can delete ordered items	8	delete_ordereditems
+32	Can view ordered items	8	view_ordereditems
+33	Can add comment	9	add_comment
+34	Can change comment	9	change_comment
+35	Can delete comment	9	delete_comment
+36	Can view comment	9	view_comment
+37	Can add cart item	10	add_cartitem
+38	Can change cart item	10	change_cartitem
+39	Can delete cart item	10	delete_cartitem
+40	Can view cart item	10	view_cartitem
+41	Can add user	11	add_user
+42	Can change user	11	change_user
+43	Can delete user	11	delete_user
+44	Can view user	11	view_user
+45	Can add customers	12	add_customers
+46	Can change customers	12	change_customers
+47	Can delete customers	12	delete_customers
+48	Can view customers	12	view_customers
+49	Can add city	13	add_city
+50	Can change city	13	change_city
+51	Can delete city	13	delete_city
+52	Can view city	13	view_city
+53	Can add restaurants	14	add_restaurants
+54	Can change restaurants	14	change_restaurants
+55	Can delete restaurants	14	delete_restaurants
+56	Can view restaurants	14	view_restaurants
+57	Can add log entry	15	add_logentry
+58	Can change log entry	15	change_logentry
+59	Can delete log entry	15	delete_logentry
+60	Can view log entry	15	view_logentry
+61	Can add permission	16	add_permission
+62	Can change permission	16	change_permission
+63	Can delete permission	16	delete_permission
+64	Can view permission	16	view_permission
+65	Can add group	17	add_group
+66	Can change group	17	change_group
+67	Can delete group	17	delete_group
+68	Can view group	17	view_group
+69	Can add content type	18	add_contenttype
+70	Can change content type	18	change_contenttype
+71	Can delete content type	18	delete_contenttype
+72	Can view content type	18	view_contenttype
+73	Can add session	19	add_session
+74	Can change session	19	change_session
+75	Can delete session	19	delete_session
+76	Can view session	19	view_session
+\.
+
+
+--
+-- Data for Name: customers_customers; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.customers_customers (id, contact_no, time_joined, gender, city_id, user_id) FROM stdin;
+\.
+
+
+--
+-- Data for Name: customers_user; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.customers_user (id, password, last_login, email, username, first_name, last_name, date_of_birth, is_active, is_admin) FROM stdin;
+1	pbkdf2_sha256$260000$cbSiQFahRkUPKdp3ftVbX0$L2h4AF8M2hujNi7egS183Er15AnPbQvX8DkQ7tV6Bvw=	2021-09-06 14:38:25.148065+05:30		atif			1995-03-25	t	t
+\.
+
+
+--
+-- Data for Name: django_admin_log; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.django_admin_log (id, action_time, object_id, object_repr, action_flag, change_message, content_type_id, user_id) FROM stdin;
+1	2021-09-06 14:38:45.608207+05:30	1	Appetizers and Snacks	1	[{"added": {}}]	1	1
+2	2021-09-06 14:39:04.792619+05:30	2	BBQ & Grilling	1	[{"added": {}}]	1	1
+3	2021-09-06 15:27:52.558666+05:30	1	Antipasto Recipes	1	[{"added": {}}]	3	1
+4	2021-09-06 15:36:15.257056+05:30	1	Kolkata	1	[{"added": {}}]	13	1
+5	2021-09-06 15:36:51.810904+05:30	2	Srinagar	1	[{"added": {}}]	13	1
+6	2021-09-06 15:37:41.215047+05:30	1	Mama's Restaurant	1	[{"added": {}}]	14	1
+7	2021-09-06 15:40:47.919274+05:30	2	Cheese and Bacon Potato Rounds	1	[{"added": {}}]	3	1
+\.
+
+
+--
+-- Data for Name: django_content_type; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.django_content_type (id, app_label, model) FROM stdin;
+1	menus	category
+2	menus	offer
+3	menus	menuitem
+4	menus	ingredients
+5	orders	cart
+6	orders	placedorder
+7	orders	status
+8	orders	ordereditems
+9	orders	comment
+10	orders	cartitem
+11	customers	user
+12	customers	customers
+13	restaurants	city
+14	restaurants	restaurants
+15	admin	logentry
+16	auth	permission
+17	auth	group
+18	contenttypes	contenttype
+19	sessions	session
+\.
+
+
+--
+-- Data for Name: django_migrations; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.django_migrations (id, app, name, applied) FROM stdin;
+1	contenttypes	0001_initial	2021-09-06 09:28:15.059681+05:30
+2	restaurants	0001_initial	2021-09-06 12:18:35.669772+05:30
+3	customers	0001_initial	2021-09-06 12:18:35.693756+05:30
+4	admin	0001_initial	2021-09-06 12:18:35.717739+05:30
+5	admin	0002_logentry_remove_auto_add	2021-09-06 12:18:35.725733+05:30
+6	admin	0003_logentry_add_action_flag_choices	2021-09-06 12:18:35.725733+05:30
+7	contenttypes	0002_remove_content_type_name	2021-09-06 12:18:35.741722+05:30
+8	auth	0001_initial	2021-09-06 12:18:35.789759+05:30
+9	auth	0002_alter_permission_name_max_length	2021-09-06 12:18:35.797686+05:30
+10	auth	0003_alter_user_email_max_length	2021-09-06 12:18:35.806234+05:30
+11	auth	0004_alter_user_username_opts	2021-09-06 12:18:35.814231+05:30
+12	auth	0005_alter_user_last_login_null	2021-09-06 12:18:35.822228+05:30
+13	auth	0006_require_contenttypes_0002	2021-09-06 12:18:35.822228+05:30
+14	auth	0007_alter_validators_add_error_messages	2021-09-06 12:18:35.83022+05:30
+15	auth	0008_alter_user_username_max_length	2021-09-06 12:18:35.83022+05:30
+16	auth	0009_alter_user_last_name_max_length	2021-09-06 12:18:35.838215+05:30
+17	auth	0010_alter_group_name_max_length	2021-09-06 12:18:35.846221+05:30
+18	auth	0011_update_proxy_permissions	2021-09-06 12:18:35.855239+05:30
+19	auth	0012_alter_user_first_name_max_length	2021-09-06 12:18:35.863236+05:30
+20	menus	0001_initial	2021-09-06 12:18:36.00295+05:30
+21	orders	0001_initial	2021-09-06 12:18:36.352356+05:30
+22	sessions	0001_initial	2021-09-06 12:18:36.368337+05:30
+23	restaurants	0002_alter_restaurants_mob_no	2021-09-06 15:35:38.457531+05:30
+\.
+
+
+--
+-- Data for Name: django_session; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.django_session (session_key, session_data, expire_date) FROM stdin;
+wxt9eegxnbdmf70p73wuh9ff7zslog9h	.eJxVjDsOwjAQBe_iGll2dv2jpOcMltdr4wBKpDipEHeHSCmgfTPzXiKmbW1x62WJI4uz0OL0u1HKjzLtgO9pus0yz9O6jCR3RR60y-vM5Xk53L-Dlnr71s57YF2KRaPJahoAKjrGxDblDKpWEyA4ZPKMhI5q8KCCAkPZ4zCI9wfbNTd9:1mNAc5:pcU4GKzLGowLLG69chT1tpzYs50P8BhtQFEc-Sbb4fQ	2021-09-20 14:38:25.148065+05:30
+1g7pjkm81jrd92vrygge0289nnbivk22	eyJjYXRlZ29yaWVzIjpbIkFwcGV0aXplcnMgYW5kIFNuYWNrcyIsIkJCUSAmIEdyaWxsaW5nIl19:1mNBaX:Nd6vt2AJZ7q5cvVU_GTKhTBl6MCdUs0f6BNYGH7DC3k	2021-09-20 15:40:53.006154+05:30
+\.
+
+
+--
+-- Data for Name: menus_category; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.menus_category (id, name, uri_name, description, image) FROM stdin;
+1	Appetizers and Snacks	appetizers-and-snacks	Perfect party appetizers made easy. See hundreds of tasty appetizers with photos, helpful reviews, and tips on how to make them.	
+2	BBQ & Grilling	bbq-grilling	The best BBQ chicken, pork and BBQ sauces. Hundreds of barbecue and grilling recipes, with tips and tricks from home grillers.	
+\.
+
+
+--
+-- Data for Name: menus_ingredients; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.menus_ingredients (id, name, item_id) FROM stdin;
+\.
+
+
+--
+-- Data for Name: menus_menuitem; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.menus_menuitem (id, item_name, description, recipe, is_veg, price, is_available, image, date_added, category_id) FROM stdin;
+1	Antipasto Recipes	Looking for antipasto recipes? Find recipes for Italian first-course favorites like caprese, marinated mushrooms, fried zucchini blossoms, caponata and carpaccio, reviewed and rated by Allrecipes' community of home cooks.		t	234.00	t	menu_items/image_6_CSInD6U.jpg	2021-09-06 15:27:52.542677+05:30	1
+2	Cheese and Bacon Potato Rounds	Potatoes, cheese and bacon--a great combination! Serve with sour cream if you so desire.\r\n\r\nBy Michele O'Sullivan		f	500.00	t	menu_items/image.jpg	2021-09-06 15:40:47.895286+05:30	1
+\.
+
+
+--
+-- Data for Name: menus_menuitem_offer; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.menus_menuitem_offer (id, menuitem_id, offer_id) FROM stdin;
+\.
+
+
+--
+-- Data for Name: menus_menuitem_restruant; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.menus_menuitem_restruant (id, menuitem_id, restaurants_id) FROM stdin;
+1	2	1
+\.
+
+
+--
+-- Data for Name: menus_offer; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.menus_offer (id, name, discount, date_from, time_from, date_to, time_to) FROM stdin;
+\.
+
+
+--
+-- Data for Name: orders_cart; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.orders_cart (id, count, total, updated, "timestamp", user_id) FROM stdin;
+\.
+
+
+--
+-- Data for Name: orders_cartitem; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.orders_cartitem (id, quantity, total_price, size, cart_id, menu_item_id) FROM stdin;
+\.
+
+
+--
+-- Data for Name: orders_comment; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.orders_comment (id, text, created, is_req, is_complaint, customer_id, order_id) FROM stdin;
+\.
+
+
+--
+-- Data for Name: orders_ordereditems; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.orders_ordereditems (id, item_name, quantity, total_price, size, item_id, ordereditem_id) FROM stdin;
+\.
+
+
+--
+-- Data for Name: orders_placedorder; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.orders_placedorder (id, order_id, order_time, estimated_delivery_time, actual_delivery_time, total_price, is_delivered, is_confirmed, city, building, zip_code, razor_pay_order_id, razor_pay_payment_id, razor_pay_signature, email, mob_no, customer_id) FROM stdin;
+\.
+
+
+--
+-- Data for Name: orders_status; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.orders_status (id, status, "time") FROM stdin;
+\.
+
+
+--
+-- Data for Name: orders_status_order; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.orders_status_order (id, status_id, placedorder_id) FROM stdin;
+\.
+
+
+--
+-- Data for Name: restaurants_city; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.restaurants_city (id, city_name, zip_code) FROM stdin;
+1	Kolkata	700015
+2	Srinagar	190011
+\.
+
+
+--
+-- Data for Name: restaurants_restaurants; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.restaurants_restaurants (id, name, address, mob_no, opening_time, closing_time, website, cover, city_id) FROM stdin;
+1	Mama's Restaurant	Near Firdous Cinema, Hawal, Kalnat Pura, Srinagar,	+916006763	10:07:00	10:07:00		restraunts/cover/image_ykNu4gZ.jpg	2
+\.
+
+
+--
+-- Name: auth_group_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.auth_group_id_seq', 1, false);
+
+
+--
+-- Name: auth_group_permissions_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.auth_group_permissions_id_seq', 1, false);
+
+
+--
+-- Name: auth_permission_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.auth_permission_id_seq', 76, true);
+
+
+--
+-- Name: customers_customers_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.customers_customers_id_seq', 1, false);
+
+
+--
+-- Name: customers_user_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.customers_user_id_seq', 1, true);
+
+
+--
+-- Name: django_admin_log_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.django_admin_log_id_seq', 7, true);
+
+
+--
+-- Name: django_content_type_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.django_content_type_id_seq', 19, true);
+
+
+--
+-- Name: django_migrations_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.django_migrations_id_seq', 23, true);
+
+
+--
+-- Name: menus_category_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.menus_category_id_seq', 2, true);
+
+
+--
+-- Name: menus_ingredients_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.menus_ingredients_id_seq', 1, false);
+
+
+--
+-- Name: menus_menuitem_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.menus_menuitem_id_seq', 2, true);
+
+
+--
+-- Name: menus_menuitem_offer_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.menus_menuitem_offer_id_seq', 1, false);
+
+
+--
+-- Name: menus_menuitem_restruant_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.menus_menuitem_restruant_id_seq', 1, true);
+
+
+--
+-- Name: menus_offer_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.menus_offer_id_seq', 1, false);
+
+
+--
+-- Name: orders_cart_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.orders_cart_id_seq', 1, false);
+
+
+--
+-- Name: orders_cartitem_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.orders_cartitem_id_seq', 1, false);
+
+
+--
+-- Name: orders_comment_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.orders_comment_id_seq', 1, false);
+
+
+--
+-- Name: orders_ordereditems_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.orders_ordereditems_id_seq', 1, false);
+
+
+--
+-- Name: orders_placedorder_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.orders_placedorder_id_seq', 1, false);
+
+
+--
+-- Name: orders_status_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.orders_status_id_seq', 1, false);
+
+
+--
+-- Name: orders_status_order_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.orders_status_order_id_seq', 1, false);
+
+
+--
+-- Name: restaurants_city_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.restaurants_city_id_seq', 2, true);
+
+
+--
+-- Name: restaurants_restaurants_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.restaurants_restaurants_id_seq', 1, true);
+
+
+--
+-- Name: auth_group auth_group_name_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.auth_group
+    ADD CONSTRAINT auth_group_name_key UNIQUE (name);
+
+
+--
+-- Name: auth_group_permissions auth_group_permissions_group_id_permission_id_0cd325b0_uniq; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.auth_group_permissions
+    ADD CONSTRAINT auth_group_permissions_group_id_permission_id_0cd325b0_uniq UNIQUE (group_id, permission_id);
+
+
+--
+-- Name: auth_group_permissions auth_group_permissions_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.auth_group_permissions
+    ADD CONSTRAINT auth_group_permissions_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: auth_group auth_group_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.auth_group
+    ADD CONSTRAINT auth_group_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: auth_permission auth_permission_content_type_id_codename_01ab375a_uniq; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.auth_permission
+    ADD CONSTRAINT auth_permission_content_type_id_codename_01ab375a_uniq UNIQUE (content_type_id, codename);
+
+
+--
+-- Name: auth_permission auth_permission_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.auth_permission
+    ADD CONSTRAINT auth_permission_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: customers_customers customers_customers_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.customers_customers
+    ADD CONSTRAINT customers_customers_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: customers_customers customers_customers_user_id_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.customers_customers
+    ADD CONSTRAINT customers_customers_user_id_key UNIQUE (user_id);
+
+
+--
+-- Name: customers_user customers_user_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.customers_user
+    ADD CONSTRAINT customers_user_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: customers_user customers_user_username_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.customers_user
+    ADD CONSTRAINT customers_user_username_key UNIQUE (username);
+
+
+--
+-- Name: django_admin_log django_admin_log_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.django_admin_log
+    ADD CONSTRAINT django_admin_log_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: django_content_type django_content_type_app_label_model_76bd3d3b_uniq; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.django_content_type
+    ADD CONSTRAINT django_content_type_app_label_model_76bd3d3b_uniq UNIQUE (app_label, model);
+
+
+--
+-- Name: django_content_type django_content_type_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.django_content_type
+    ADD CONSTRAINT django_content_type_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: django_migrations django_migrations_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.django_migrations
+    ADD CONSTRAINT django_migrations_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: django_session django_session_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.django_session
+    ADD CONSTRAINT django_session_pkey PRIMARY KEY (session_key);
+
+
+--
+-- Name: menus_category menus_category_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.menus_category
+    ADD CONSTRAINT menus_category_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: menus_ingredients menus_ingredients_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.menus_ingredients
+    ADD CONSTRAINT menus_ingredients_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: menus_menuitem_offer menus_menuitem_offer_menuitem_id_offer_id_0f6e179d_uniq; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.menus_menuitem_offer
+    ADD CONSTRAINT menus_menuitem_offer_menuitem_id_offer_id_0f6e179d_uniq UNIQUE (menuitem_id, offer_id);
+
+
+--
+-- Name: menus_menuitem_offer menus_menuitem_offer_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.menus_menuitem_offer
+    ADD CONSTRAINT menus_menuitem_offer_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: menus_menuitem menus_menuitem_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.menus_menuitem
+    ADD CONSTRAINT menus_menuitem_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: menus_menuitem_restruant menus_menuitem_restruant_menuitem_id_restaurants__fbf0fb0b_uniq; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.menus_menuitem_restruant
+    ADD CONSTRAINT menus_menuitem_restruant_menuitem_id_restaurants__fbf0fb0b_uniq UNIQUE (menuitem_id, restaurants_id);
+
+
+--
+-- Name: menus_menuitem_restruant menus_menuitem_restruant_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.menus_menuitem_restruant
+    ADD CONSTRAINT menus_menuitem_restruant_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: menus_offer menus_offer_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.menus_offer
+    ADD CONSTRAINT menus_offer_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: orders_cart orders_cart_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.orders_cart
+    ADD CONSTRAINT orders_cart_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: orders_cartitem orders_cartitem_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.orders_cartitem
+    ADD CONSTRAINT orders_cartitem_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: orders_comment orders_comment_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.orders_comment
+    ADD CONSTRAINT orders_comment_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: orders_ordereditems orders_ordereditems_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.orders_ordereditems
+    ADD CONSTRAINT orders_ordereditems_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: orders_placedorder orders_placedorder_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.orders_placedorder
+    ADD CONSTRAINT orders_placedorder_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: orders_status_order orders_status_order_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.orders_status_order
+    ADD CONSTRAINT orders_status_order_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: orders_status_order orders_status_order_status_id_placedorder_id_d9107fbc_uniq; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.orders_status_order
+    ADD CONSTRAINT orders_status_order_status_id_placedorder_id_d9107fbc_uniq UNIQUE (status_id, placedorder_id);
+
+
+--
+-- Name: orders_status orders_status_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.orders_status
+    ADD CONSTRAINT orders_status_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: restaurants_city restaurants_city_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.restaurants_city
+    ADD CONSTRAINT restaurants_city_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: restaurants_restaurants restaurants_restaurants_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.restaurants_restaurants
+    ADD CONSTRAINT restaurants_restaurants_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: auth_group_name_a6ea08ec_like; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX auth_group_name_a6ea08ec_like ON public.auth_group USING btree (name varchar_pattern_ops);
+
+
+--
+-- Name: auth_group_permissions_group_id_b120cbf9; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX auth_group_permissions_group_id_b120cbf9 ON public.auth_group_permissions USING btree (group_id);
+
+
+--
+-- Name: auth_group_permissions_permission_id_84c5c92e; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX auth_group_permissions_permission_id_84c5c92e ON public.auth_group_permissions USING btree (permission_id);
+
+
+--
+-- Name: auth_permission_content_type_id_2f476e4b; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX auth_permission_content_type_id_2f476e4b ON public.auth_permission USING btree (content_type_id);
+
+
+--
+-- Name: customers_customers_city_id_34000c30; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX customers_customers_city_id_34000c30 ON public.customers_customers USING btree (city_id);
+
+
+--
+-- Name: customers_user_username_43e992e8_like; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX customers_user_username_43e992e8_like ON public.customers_user USING btree (username varchar_pattern_ops);
+
+
+--
+-- Name: django_admin_log_content_type_id_c4bce8eb; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX django_admin_log_content_type_id_c4bce8eb ON public.django_admin_log USING btree (content_type_id);
+
+
+--
+-- Name: django_admin_log_user_id_c564eba6; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX django_admin_log_user_id_c564eba6 ON public.django_admin_log USING btree (user_id);
+
+
+--
+-- Name: django_session_expire_date_a5c62663; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX django_session_expire_date_a5c62663 ON public.django_session USING btree (expire_date);
+
+
+--
+-- Name: django_session_session_key_c0390e0f_like; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX django_session_session_key_c0390e0f_like ON public.django_session USING btree (session_key varchar_pattern_ops);
+
+
+--
+-- Name: menus_category_uri_name_7a6ba75c; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX menus_category_uri_name_7a6ba75c ON public.menus_category USING btree (uri_name);
+
+
+--
+-- Name: menus_category_uri_name_7a6ba75c_like; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX menus_category_uri_name_7a6ba75c_like ON public.menus_category USING btree (uri_name varchar_pattern_ops);
+
+
+--
+-- Name: menus_ingredients_item_id_9d9186d9; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX menus_ingredients_item_id_9d9186d9 ON public.menus_ingredients USING btree (item_id);
+
+
+--
+-- Name: menus_menuitem_category_id_6afa88ab; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX menus_menuitem_category_id_6afa88ab ON public.menus_menuitem USING btree (category_id);
+
+
+--
+-- Name: menus_menuitem_offer_menuitem_id_a4616030; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX menus_menuitem_offer_menuitem_id_a4616030 ON public.menus_menuitem_offer USING btree (menuitem_id);
+
+
+--
+-- Name: menus_menuitem_offer_offer_id_c2e00be8; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX menus_menuitem_offer_offer_id_c2e00be8 ON public.menus_menuitem_offer USING btree (offer_id);
+
+
+--
+-- Name: menus_menuitem_restruant_menuitem_id_38452ccb; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX menus_menuitem_restruant_menuitem_id_38452ccb ON public.menus_menuitem_restruant USING btree (menuitem_id);
+
+
+--
+-- Name: menus_menuitem_restruant_restaurants_id_99c27744; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX menus_menuitem_restruant_restaurants_id_99c27744 ON public.menus_menuitem_restruant USING btree (restaurants_id);
+
+
+--
+-- Name: orders_cart_user_id_121a069e; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX orders_cart_user_id_121a069e ON public.orders_cart USING btree (user_id);
+
+
+--
+-- Name: orders_cartitem_cart_id_529df5fa; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX orders_cartitem_cart_id_529df5fa ON public.orders_cartitem USING btree (cart_id);
+
+
+--
+-- Name: orders_cartitem_menu_item_id_8bb3e579; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX orders_cartitem_menu_item_id_8bb3e579 ON public.orders_cartitem USING btree (menu_item_id);
+
+
+--
+-- Name: orders_comment_customer_id_4309df1c; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX orders_comment_customer_id_4309df1c ON public.orders_comment USING btree (customer_id);
+
+
+--
+-- Name: orders_comment_order_id_6f03ba56; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX orders_comment_order_id_6f03ba56 ON public.orders_comment USING btree (order_id);
+
+
+--
+-- Name: orders_ordereditems_item_id_a3a120df; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX orders_ordereditems_item_id_a3a120df ON public.orders_ordereditems USING btree (item_id);
+
+
+--
+-- Name: orders_ordereditems_ordereditem_id_7379a9fa; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX orders_ordereditems_ordereditem_id_7379a9fa ON public.orders_ordereditems USING btree (ordereditem_id);
+
+
+--
+-- Name: orders_placedorder_customer_id_5088a8d0; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX orders_placedorder_customer_id_5088a8d0 ON public.orders_placedorder USING btree (customer_id);
+
+
+--
+-- Name: orders_status_order_placedorder_id_95ab72d7; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX orders_status_order_placedorder_id_95ab72d7 ON public.orders_status_order USING btree (placedorder_id);
+
+
+--
+-- Name: orders_status_order_status_id_4cd1b32b; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX orders_status_order_status_id_4cd1b32b ON public.orders_status_order USING btree (status_id);
+
+
+--
+-- Name: restaurants_restaurants_city_id_36e11db0; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX restaurants_restaurants_city_id_36e11db0 ON public.restaurants_restaurants USING btree (city_id);
+
+
+--
+-- Name: auth_group_permissions auth_group_permissio_permission_id_84c5c92e_fk_auth_perm; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.auth_group_permissions
+    ADD CONSTRAINT auth_group_permissio_permission_id_84c5c92e_fk_auth_perm FOREIGN KEY (permission_id) REFERENCES public.auth_permission(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: auth_group_permissions auth_group_permissions_group_id_b120cbf9_fk_auth_group_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.auth_group_permissions
+    ADD CONSTRAINT auth_group_permissions_group_id_b120cbf9_fk_auth_group_id FOREIGN KEY (group_id) REFERENCES public.auth_group(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: auth_permission auth_permission_content_type_id_2f476e4b_fk_django_co; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.auth_permission
+    ADD CONSTRAINT auth_permission_content_type_id_2f476e4b_fk_django_co FOREIGN KEY (content_type_id) REFERENCES public.django_content_type(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: customers_customers customers_customers_city_id_34000c30_fk_restaurants_city_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.customers_customers
+    ADD CONSTRAINT customers_customers_city_id_34000c30_fk_restaurants_city_id FOREIGN KEY (city_id) REFERENCES public.restaurants_city(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: customers_customers customers_customers_user_id_ee51bdaa_fk_customers_user_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.customers_customers
+    ADD CONSTRAINT customers_customers_user_id_ee51bdaa_fk_customers_user_id FOREIGN KEY (user_id) REFERENCES public.customers_user(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: django_admin_log django_admin_log_content_type_id_c4bce8eb_fk_django_co; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.django_admin_log
+    ADD CONSTRAINT django_admin_log_content_type_id_c4bce8eb_fk_django_co FOREIGN KEY (content_type_id) REFERENCES public.django_content_type(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: django_admin_log django_admin_log_user_id_c564eba6_fk_customers_user_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.django_admin_log
+    ADD CONSTRAINT django_admin_log_user_id_c564eba6_fk_customers_user_id FOREIGN KEY (user_id) REFERENCES public.customers_user(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: menus_ingredients menus_ingredients_item_id_9d9186d9_fk_menus_menuitem_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.menus_ingredients
+    ADD CONSTRAINT menus_ingredients_item_id_9d9186d9_fk_menus_menuitem_id FOREIGN KEY (item_id) REFERENCES public.menus_menuitem(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: menus_menuitem menus_menuitem_category_id_6afa88ab_fk_menus_category_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.menus_menuitem
+    ADD CONSTRAINT menus_menuitem_category_id_6afa88ab_fk_menus_category_id FOREIGN KEY (category_id) REFERENCES public.menus_category(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: menus_menuitem_offer menus_menuitem_offer_menuitem_id_a4616030_fk_menus_menuitem_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.menus_menuitem_offer
+    ADD CONSTRAINT menus_menuitem_offer_menuitem_id_a4616030_fk_menus_menuitem_id FOREIGN KEY (menuitem_id) REFERENCES public.menus_menuitem(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: menus_menuitem_offer menus_menuitem_offer_offer_id_c2e00be8_fk_menus_offer_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.menus_menuitem_offer
+    ADD CONSTRAINT menus_menuitem_offer_offer_id_c2e00be8_fk_menus_offer_id FOREIGN KEY (offer_id) REFERENCES public.menus_offer(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: menus_menuitem_restruant menus_menuitem_restr_menuitem_id_38452ccb_fk_menus_men; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.menus_menuitem_restruant
+    ADD CONSTRAINT menus_menuitem_restr_menuitem_id_38452ccb_fk_menus_men FOREIGN KEY (menuitem_id) REFERENCES public.menus_menuitem(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: menus_menuitem_restruant menus_menuitem_restr_restaurants_id_99c27744_fk_restauran; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.menus_menuitem_restruant
+    ADD CONSTRAINT menus_menuitem_restr_restaurants_id_99c27744_fk_restauran FOREIGN KEY (restaurants_id) REFERENCES public.restaurants_restaurants(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: orders_cart orders_cart_user_id_121a069e_fk_customers_customers_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.orders_cart
+    ADD CONSTRAINT orders_cart_user_id_121a069e_fk_customers_customers_id FOREIGN KEY (user_id) REFERENCES public.customers_customers(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: orders_cartitem orders_cartitem_cart_id_529df5fa_fk_orders_cart_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.orders_cartitem
+    ADD CONSTRAINT orders_cartitem_cart_id_529df5fa_fk_orders_cart_id FOREIGN KEY (cart_id) REFERENCES public.orders_cart(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: orders_cartitem orders_cartitem_menu_item_id_8bb3e579_fk_menus_menuitem_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.orders_cartitem
+    ADD CONSTRAINT orders_cartitem_menu_item_id_8bb3e579_fk_menus_menuitem_id FOREIGN KEY (menu_item_id) REFERENCES public.menus_menuitem(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: orders_comment orders_comment_customer_id_4309df1c_fk_customers_customers_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.orders_comment
+    ADD CONSTRAINT orders_comment_customer_id_4309df1c_fk_customers_customers_id FOREIGN KEY (customer_id) REFERENCES public.customers_customers(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: orders_comment orders_comment_order_id_6f03ba56_fk_orders_placedorder_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.orders_comment
+    ADD CONSTRAINT orders_comment_order_id_6f03ba56_fk_orders_placedorder_id FOREIGN KEY (order_id) REFERENCES public.orders_placedorder(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: orders_ordereditems orders_ordereditems_item_id_a3a120df_fk_menus_menuitem_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.orders_ordereditems
+    ADD CONSTRAINT orders_ordereditems_item_id_a3a120df_fk_menus_menuitem_id FOREIGN KEY (item_id) REFERENCES public.menus_menuitem(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: orders_ordereditems orders_ordereditems_ordereditem_id_7379a9fa_fk_orders_pl; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.orders_ordereditems
+    ADD CONSTRAINT orders_ordereditems_ordereditem_id_7379a9fa_fk_orders_pl FOREIGN KEY (ordereditem_id) REFERENCES public.orders_placedorder(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: orders_placedorder orders_placedorder_customer_id_5088a8d0_fk_customers; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.orders_placedorder
+    ADD CONSTRAINT orders_placedorder_customer_id_5088a8d0_fk_customers FOREIGN KEY (customer_id) REFERENCES public.customers_customers(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: orders_status_order orders_status_order_placedorder_id_95ab72d7_fk_orders_pl; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.orders_status_order
+    ADD CONSTRAINT orders_status_order_placedorder_id_95ab72d7_fk_orders_pl FOREIGN KEY (placedorder_id) REFERENCES public.orders_placedorder(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: orders_status_order orders_status_order_status_id_4cd1b32b_fk_orders_status_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.orders_status_order
+    ADD CONSTRAINT orders_status_order_status_id_4cd1b32b_fk_orders_status_id FOREIGN KEY (status_id) REFERENCES public.orders_status(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: restaurants_restaurants restaurants_restaurants_city_id_36e11db0_fk_restaurants_city_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.restaurants_restaurants
+    ADD CONSTRAINT restaurants_restaurants_city_id_36e11db0_fk_restaurants_city_id FOREIGN KEY (city_id) REFERENCES public.restaurants_city(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- PostgreSQL database dump complete
+--
+

@@ -15,7 +15,7 @@ class Restaurants(models.Model):
     name = models.CharField(max_length=50, blank=False)
     address = models.CharField(max_length=50, blank=False)
     city = models.ForeignKey(City, on_delete=models.CASCADE)
-    mob_no = models.IntegerField()
+    mob_no = models.CharField(max_length=10)
     opening_time = models.TimeField()
     closing_time = models.TimeField()
     website = models.URLField(blank=True)
