@@ -81,9 +81,9 @@ class Offer(models.Model):
     class Meta:
         ordering = ['id']
 
-    @property
-    def discount_percent(self):
-        return (100-self.price)/100
+    # @property
+    # def discount_percent(self):
+    #     return (100-self.price)/100
 
     def __str__(self):
         return f'{self.name} offer'

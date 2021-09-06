@@ -55,11 +55,15 @@ from .helpers import get_menu_list
 
 def products(request):
     if request.method == 'GET':
+        
         query = request.GET.get('category')
         size = request.GET.get('size')
-        # print(size)
-        user=Customers.objects.get(user=request.user)
+
         try:
+            if request.user.is_authenticated:
+                user=Customers.objects.get(user=request.user)
+            else:
+                user = None
             cartitem = list(CartItem.objects.filter(cart__user=user).values_list('menu_item__id',flat=True))
         except ObjectDoesNotExist:
             pass
